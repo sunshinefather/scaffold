@@ -99,8 +99,10 @@ public class TableInfo {
 		for (PropertyInfo field : fields) {
 			String name=field.getName();
 			String type=field.getType();
-
-			sb.append(TAB+"private "+type+" "+name+";//"+field.getRemarks()+ENDL);
+			if(field.getRemarks()!=null && "".equals(field.getRemarks().trim())){
+				sb.append(TAB+"/**"+field.getRemarks()+"*/"+ENDL);
+			}
+			sb.append(TAB+"private "+type+" "+name+";"+ENDL);
 			//set()
 			sb1.append(TAB+"public void set" + StringUtils.capitalize(name)+ 
 					"( " + type + " " + name + " ) {"+ENDL);
@@ -155,7 +157,6 @@ public class TableInfo {
 			if(col.getType().toUpperCase().equals("DATE")){
 				sb.append("#{" + col.parseFieldName() +"}");
 			}else{
-				//sb.append("#{" + col.parseFieldName() + ",jdbcType=" + col.parseJdbcType()+ "}");
 				sb.append("#{" + col.parseFieldName()+"}");
 			}
 			if (i + 1 != columns.size()) {
@@ -176,25 +177,22 @@ public class TableInfo {
      */
 	public String getUpdateStatement() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("update " + name + " set ");
+		sb.append(TAB2+"update " + name + " set "+primaryKey + "=#{"+parserKey+"}"+ENDL);
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			if(!col.getName().toLowerCase().equals(primaryKey.toLowerCase())){
-				sb.append(col.getName() + "=#{" + col.parseFieldName() +"}");
-				
-				/*if(col.getType().toUpperCase().equals("DATE")){
-					sb.append(col.getName() + "=#{" + col.parseFieldName() +"}");
+				if("String".equals(col.parseJavaType())){
+					sb.append(TAB2+"<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
 				}else{
-					sb.append(col.getName() + "=#{" + col.parseFieldName() + ",jdbcType=" + col.parseJdbcType()+ "}");
-				}*/
-				if (i + 1 != columns.size()) {
-					sb.append(",");
+					sb.append(TAB2+"<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
 				}
+				sb.append(TAB3+","+col.getName() + "=#{" + col.parseFieldName() +"}"+ENDL);
+				sb.append(TAB2+"</if>"+ENDL);
 			}
 	
 		}
-		sb.append(" where " + primaryKey + "=#{"+parserKey+"}");
+		sb.append(TAB+" where " + primaryKey + "=#{"+parserKey+"}");
 		return sb.toString();
 	}
     /**
@@ -254,14 +252,19 @@ public class TableInfo {
 	public String getFindByLike() {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
-			System.out.println(col.getName()+" "+col.getType()+" "+col.getType().contains("CHAR"));
-			if (col.getType().contains("CHAR")) {
 				sb.append(TAB3);
-				sb.append("<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' \" > "+ENDL);
-				sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+ col.parseFieldName()+",jdbcType=VARCHAR})>0 ]]>"+ENDL);
+				if("String".equals(col.parseJavaType())){
+					sb.append("<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
+				}else{
+					sb.append("<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
+				}
+				if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
+					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
+					sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+ col.parseFieldName()+"})>0 ]]>"+ENDL);
+				}else{
+					sb.append(TAB4+" and `"+ col.getName() +"`=#{"+ col.parseFieldName()+"}"+ENDL);
+				}
 				sb.append(TAB3+"</if>"+ENDL);
-
-			}
 		}
 		return sb.toString();
 	}

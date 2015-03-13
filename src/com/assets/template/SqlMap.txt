@@ -17,7 +17,7 @@ ${resultMap}
 	<select id="findObjectById" parameterType="String" resultMap="baseResult">
 		${selectStatement} 
 		where
-		${primaryKey}=#{${parserKey}}
+		${primaryKey}=#{id}
 	</select>
 	
 	<select id="findList" resultMap="baseResult" parameterType="com.zyt.web.publics.mybatis.PaginationAble">
@@ -28,14 +28,14 @@ ${findLikeBy}
         order by ${primaryKey} desc
 	</select>
 	<select id="loadList" parameterType="${clzName}" resultMap="baseResult">
-	   		${selectStatement}
+	   	${selectStatement}
 		<where>
 ${findLikeBy}
 		</where> 
         order by ${primaryKey} desc
 	</select>
 	<update id="update" parameterType="${clzName}">
-       ${updateStatement}
+${updateStatement}
 	</update>
 	
 	<delete id="delete" parameterType="string">
