@@ -1,4 +1,3 @@
 scaffold
 ========
-
-Java code generation tool automatically
+java代码生成工具
