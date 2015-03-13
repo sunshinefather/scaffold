@@ -7,18 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import cn.sccl.common.util.StringUtil;
+import com.assets.utils.StringUtil;
 
 public class ScaffoldGen {
-
 	private static final String NULLABLE = "NULLABLE";//可空
 	private static final String DECIMAL_DIGITS = "DECIMAL_DIGITS";//十进制位
 	private static final String COLUMN_SIZE = "COLUMN_SIZE";//字段长度

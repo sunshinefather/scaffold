@@ -1,7 +1,6 @@
 package com.assets;
 
 import java.sql.SQLException;
-
 public class Main {
 
 	public static void main(String arg[]) throws SQLException {

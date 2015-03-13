@@ -1,7 +1,7 @@
 package com.assets.wordsparser;
 import org.apache.commons.lang.StringUtils;
 
-import cn.sccl.common.util.StringUtil;
+import com.assets.utils.StringUtil;
 /**
  * 下划线左边的单词小写,下划线右边的单词首字母大写,且去掉下划线
  * @ClassName:  UnderlineSplitWordsParser   

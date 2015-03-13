@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
-import cn.sccl.common.util.StringUtil;
+
+import com.assets.utils.StringUtil;
 /**
  * 生成文件
  * @ClassName:  FileGenerator   

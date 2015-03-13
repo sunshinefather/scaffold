@@ -7,8 +7,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import cn.sccl.common.util.DevLog;
-import cn.sccl.common.util.StringUtil;
+import com.assets.utils.DevLog;
+import com.assets.utils.StringUtil;
 
 public class ScaffoldBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
