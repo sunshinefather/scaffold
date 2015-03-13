@@ -1,0 +1,16 @@
+package ${pkgPath};
+
+import java.io.Serializable;
+import org.apache.ibatis.type.Alias;
+
+/**
+ * @Description:${moduleNameCN}bean
+ * @ClassName:  ${clzName} 
+ * @author: sunshine  
+ */
+@Alias("${clzName}")
+public class ${clzName} implements Serializable {
+	private static final long serialVersionUID = 1L;
+${propertysDeclareInfo}
+    
+}

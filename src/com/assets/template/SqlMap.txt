@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${daoPath}">
+ 	<resultMap id="baseResult" type="${clzName}">
+${resultMap}
+	</resultMap>
+	<sql id="columns">
+		${columnNames}
+	</sql>
+	
+	<insert id="insert" parameterType="${clzName}">
+		 <![CDATA[
+            ${insertStatement}
+	     ]]>
+	</insert>
+	
+	<select id="findObjectById" parameterType="String" resultMap="baseResult">
+		${selectStatement} 
+		where
+		${primaryKey}=#{${parserKey}}
+	</select>
+	
+	<select id="findList" resultMap="baseResult" parameterType="com.zyt.web.publics.mybatis.PaginationAble">
+		${selectStatement}
+		<where>
+${findLikeBy}
+		</where> 
+        order by ${primaryKey} desc
+	</select>
+	<select id="loadList" parameterType="${clzName}" resultMap="baseResult">
+	   		${selectStatement}
+		<where>
+${findLikeBy}
+		</where> 
+        order by ${primaryKey} desc
+	</select>
+	<update id="update" parameterType="${clzName}">
+       ${updateStatement}
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from ${tblName} where ${primaryKey} in 
+	   <foreach collection="array" close=")" open="(" separator="," item="item">
+		      #{item}
+	   </foreach>
+	</delete>
+	<select id="maxid" resultType="int">
+	    select max(${primaryKey}) id from ${tblName}
+	</select>
+	<select id="validate" parameterType="${clzName}" resultType="int">
+      select count(1) as ct from ${tblName} 
+        <where>
+           <include refid="other_condition"/>
+        </where>
+    </select>
+ 	<sql id="other_condition">
+${otherCondition}
+ 	</sql>
+</mapper>

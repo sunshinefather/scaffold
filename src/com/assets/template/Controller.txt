@@ -1,0 +1,130 @@
+package ${pkgPath};
+
+import org.apache.commons.lang.StringUtils;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.zyt.web.publics.base.BaseController;
+import com.zyt.web.publics.base.JsonEntity;
+import com.zyt.web.publics.mybatis.PaginationAble;
+import com.zyt.web.publics.utils.reflection.ReflectionUtils;
+import ${beanPath};
+import ${servicePath};
+
+/**
+ * @ClassName: ${clzName}Controller
+ * @Description:${moduleNameCN}控制层
+ * @author: ${author}
+ */
+@Controller
+@RequestMapping("/after/${clzNameLC}")
+public class ${clzName}Controller extends BaseController {
+
+    @Resource
+	private I${clzName}Service ${clzNameLC}Service;
+	
+    /** 
+     *${moduleNameCN}分页列表数据
+	 * @Title: list
+	 * @Description: 分页获取${moduleNameCN}列表数据
+	 */
+	@RequestMapping("/list")
+	public String list(Model model, PaginationAble page){
+		page.setWhereParameters(getParams());
+		model.addAttribute("page", page);
+		model.addAttribute("list", ${clzNameLC}Service.findList(page));
+		return "after/${clzNameLC}/list";
+	}
+	
+   /** 
+     *${moduleNameCN}列表数据
+	 * @Title: list
+	 * @Description: 获取${moduleNameCN}列表数据
+	 */
+	@RequestMapping("/loadlist")
+	public String loadList(Model model,${clzName} ${clzNameLC}){
+		model.addAttribute("list", ${clzNameLC}Service.queryList(${clzNameLC}));
+		return "after/${clzNameLC}/loadlist";
+	}
+	
+	/**
+	 * ${moduleNameCN}表单
+	 * @Title: add
+	 * @Description:
+	 */
+	@RequestMapping("/add")
+	public String add(Model model) {
+		return "after/${clzNameLC}/edit";
+	}
+
+	/**
+	 * 更具ID获取${moduleNameCN}信息
+	 * @Title: edit
+	 * @Description: TODO
+	 */
+	@RequestMapping("/edit/{id}")
+	public String edit(Model model, @PathVariable String ${parserKey}) {
+		model.addAttribute("obj", ${clzNameLC}Service.findObjectById(${parserKey}));
+		return "after/${clzNameLC}/edit";
+	}
+
+	/**
+	 * 保存${moduleNameCN}
+	 * @Title: saveOrUpdate
+	 * @Description: TODO
+	 */
+	@RequestMapping("/save")
+	@ResponseBody
+	public JsonEntity saveOrUpdate(${clzName} ${clzNameLC}) {
+		JsonEntity js = new JsonEntity();
+		if (!ValidateEntity(${clzNameLC}, js)) {
+			return js;
+		}
+		if (StringUtils.isEmpty(${clzNameLC}.get${capitalizeKey}())) {
+			js.setCode(${clzNameLC}Service.insert(${clzNameLC}));
+		} else {
+			js.setCode(${clzNameLC}Service.update(${clzNameLC}));
+		}
+		return js;
+	}
+
+	/**
+	 * 删除${moduleNameCN}
+	 * @Title: delete${clzName}
+	 * @Description: TODO
+	 */
+	@RequestMapping("/del")
+	@ResponseBody
+	public JsonEntity delete(String ${parserKey}) {
+		if (StringUtils.isEmpty(${parserKey})) {
+			throw new RuntimeException("参数不能为空");
+		}
+		return new JsonEntity(${clzNameLC}Service.delete(${parserKey}.split("[`]")));
+	}
+	
+	/**
+	 * 通用ajax校验
+	 * @Description: TODO
+	 * @Title: validate
+	 * @author: sunshine 
+	 */
+	@RequestMapping("/validate")
+	@ResponseBody
+    public JsonEntity validate(${clzName} ${clzNameLC},String fieldId,String fieldValue, String old_field,HttpServletRequest request,HttpServletResponse response){
+		JsonEntity je= new JsonEntity();
+		je.setData(fieldId);
+	if (StringUtils.isEmpty(old_field) || !old_field.equals(fieldValue)){
+		ReflectionUtils.setFieldValue(${clzNameLC}, fieldId, fieldValue);
+		int ct=${clzNameLC}Service.validate(${clzNameLC});
+		if(ct!=0){
+			je.setStatus(JsonEntity.fail);
+		}
+    }
+		return je;
+	}
+}

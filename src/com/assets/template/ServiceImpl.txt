@@ -1,0 +1,31 @@
+package ${pkgPath};
+
+import ${servicePath};
+import ${daoPath};
+import ${beanPath};
+import com.zyt.web.publics.base.BaseDAO;
+import org.springframework.stereotype.Service;
+import com.zyt.web.publics.base.AbstractServiceImpl;
+import javax.annotation.Resource;
+
+/**
+ * @Description:${moduleNameCN}业务层实现类
+ * @ClassName:  ${clzName}ServiceImpl
+ * @author: sunshine  
+ */
+ @Service("${clzNameLC}Service")
+public class ${clzName}ServiceImpl extends AbstractServiceImpl<${clzName}> implements I${clzName}Service {
+    
+    @Resource
+	private ${clzName}Dao ${clzNameLC}Dao;
+	
+    @Override
+	public void setId(${clzName} t, String id) {
+         t.set${capitalizeKey}(id);
+	}
+	
+	@Override
+	public BaseDAO<${clzName}> dao() {
+		return ${clzNameLC}Dao;
+	}
+}

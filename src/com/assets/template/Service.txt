@@ -1,0 +1,13 @@
+package ${pkgPath};
+
+import com.zyt.web.publics.base.BaseService;
+import ${beanPath};
+
+/**
+ * @Description:${moduleNameCN}业务层接口
+ * @ClassName:  I${clzName}Service
+ * @author: sunshine  
+ */
+public interface I${clzName}Service extends BaseService<${clzName}> {
+
+}

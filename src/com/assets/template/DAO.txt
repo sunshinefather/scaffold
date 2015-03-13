@@ -1,0 +1,14 @@
+package ${pkgPath};
+
+import com.zyt.web.publics.base.BaseDAO;
+import ${beanPath};
+
+/**
+ * ${moduleNameCN}Dao
+ * @ClassName:  ${clzName}Dao   
+ * @Description:TODO   
+ * @author: ${author} 
+ */
+public interface ${clzName}Dao extends BaseDAO<${clzName}> {
+
+}

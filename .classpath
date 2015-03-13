@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/sccl-base-common.jar"/>
+	<classpathentry kind="lib" path="lib/sccl-base-validate.jar"/>
+	<classpathentry kind="lib" path="lib/commons-configuration-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.24.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
