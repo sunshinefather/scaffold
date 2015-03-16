@@ -65,7 +65,7 @@ public class ScaffoldBuilder {
 		mapping.put("capitalizeKey",StringUtils.capitalize(tableInfo.getParserKey()));
 		
 		DevLog.debug(tableInfo.getFindByLike());
-		mapping.put("findLikeBy", tableInfo.getFindByLike());
+		mapping.put("findByLike", tableInfo.getFindByLike());
 		
 		DevLog.debug(tableInfo.getSelectStatement());
 		mapping.put("selectStatement", tableInfo.getSelectStatement());

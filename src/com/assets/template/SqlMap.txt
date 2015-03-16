@@ -23,14 +23,14 @@ ${resultMap}
 	<select id="findList" resultMap="baseResult" parameterType="com.zyt.web.publics.mybatis.PaginationAble">
 		${selectStatement}
 		<where>
-${findLikeBy}
+${findByLike}
 		</where> 
         order by ${primaryKey} desc
 	</select>
 	<select id="loadList" parameterType="${clzName}" resultMap="baseResult">
 	   	${selectStatement}
 		<where>
-${findLikeBy}
+${findByLike}
 		</where> 
         order by ${primaryKey} desc
 	</select>
