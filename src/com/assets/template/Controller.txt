@@ -68,7 +68,7 @@ public class ${clzName}Controller extends BaseController {
 	 * @Description: TODO
 	 */
 	@RequestMapping("/edit/{id}")
-	public String edit(Model model, @PathVariable String ${parserKey}) {
+	public String edit(Model model, @PathVariable(value="id") String ${parserKey}) {
 		model.addAttribute("obj", ${clzNameLC}Service.findObjectById(${parserKey}));
 		return "after/${clzNameLC}/edit";
 	}

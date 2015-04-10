@@ -4,7 +4,7 @@
 	<classpathentry kind="lib" path="lib/commons-configuration-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections.jar" sourcepath="D:/softpack/maven/local/commons-collections/commons-collections/3.2/commons-collections-3.2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.24.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>

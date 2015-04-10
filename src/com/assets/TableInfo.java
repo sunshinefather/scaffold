@@ -99,7 +99,7 @@ public class TableInfo {
 		for (PropertyInfo field : fields) {
 			String name=field.getName();
 			String type=field.getType();
-			if(field.getRemarks()!=null && "".equals(field.getRemarks().trim())){
+			if(field.getRemarks()!=null && !"".equals(field.getRemarks().trim())){
 				sb.append(TAB+"/**"+field.getRemarks()+"*/"+ENDL);
 			}
 			sb.append(TAB+"private "+type+" "+name+";"+ENDL);
