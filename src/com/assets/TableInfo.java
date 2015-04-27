@@ -177,21 +177,23 @@ public class TableInfo {
      */
 	public String getUpdateStatement() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(TAB2+"update " + name + " set "+primaryKey + "=#{"+parserKey+"}"+ENDL);
+		sb.append(TAB2+"update " + name + " "+ENDL);
+		sb.append(TAB2+"<set>" +ENDL);
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			if(!col.getName().toLowerCase().equals(primaryKey.toLowerCase())){
 				if("String".equals(col.parseJavaType())){
-					sb.append(TAB2+"<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
+					sb.append(TAB3+"<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
 				}else{
-					sb.append(TAB2+"<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
+					sb.append(TAB3+"<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
 				}
-				sb.append(TAB3+","+col.getName() + "=#{" + col.parseFieldName() +"}"+ENDL);
-				sb.append(TAB2+"</if>"+ENDL);
+				sb.append(TAB4+col.getName() + "=#{" + col.parseFieldName() +"},"+ENDL);
+				sb.append(TAB3+"</if>"+ENDL);
 			}
 	
 		}
+		sb.append(TAB2+"</set>" +ENDL);
 		sb.append(TAB+" where " + primaryKey + "=#{"+parserKey+"}");
 		return sb.toString();
 	}
