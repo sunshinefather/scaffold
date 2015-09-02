@@ -1,3 +1,1 @@
-scaffold
-========
-java代码生成工具
+mybatis java gen 
