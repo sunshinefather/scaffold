@@ -3,14 +3,15 @@ import org.apache.commons.lang.StringUtils;
 
 import com.assets.utils.StringUtil;
 /**
- * 下划线左边的单词小写,下划线右边的单词首字母大写,且去掉下划线
+ * 驼峰式命名转换
  * @ClassName:  UnderlineSplitWordsParser   
  * @Description:TODO   
  * @author: sunshine  
  * @date:   2014年4月9日 上午10:18:00
  */
 public class UnderlineSplitWordsParser implements WordsParser {
-
+	
+    @Override
 	public String parseWords(String orginalString) {
 		orginalString=StringUtils.lowerCase(orginalString);
 		String[] items = orginalString.split(StringUtil.UNDER_LINE);
