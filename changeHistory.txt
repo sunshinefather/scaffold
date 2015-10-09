@@ -1,0 +1,2 @@
+1.去掉loadList 使用同统一findList
+2.添加 Date Double Integer  Boolean类型
