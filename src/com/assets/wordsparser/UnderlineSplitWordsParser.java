@@ -13,7 +13,6 @@ public class UnderlineSplitWordsParser implements WordsParser {
 	
     @Override
 	public String parseWords(String orginalString) {
-		orginalString=StringUtils.lowerCase(orginalString);
 		String[] items = orginalString.split(StringUtil.UNDER_LINE);
 		String result = "";
 		if(items.length==1){
@@ -22,7 +21,7 @@ public class UnderlineSplitWordsParser implements WordsParser {
 			for (int i = 0; i < items.length; i++) 
 			 {
 				if (i > 0) {
-					result = result+StringUtils.capitalize(items[i]);
+					result = result+StringUtils.capitalize(StringUtils.lowerCase(items[i]));
 				}else{
 					result = result + items[i].toLowerCase();
 				}
