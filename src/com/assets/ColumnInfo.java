@@ -80,9 +80,6 @@ public class ColumnInfo {
 	public String parseJavaType() {
 		String jdbcType = StringUtils.upperCase(getType());
 		String result = "String";
-		if ("DATE".equals(jdbcType)) {
-			result = "Date";
-		}
 		if (getDigits() > 0) {		
 			result = "BigDecimal";
 		}
@@ -94,9 +91,6 @@ public class ColumnInfo {
 		String result = "VARCHAR";
 		if ("BigDecimal".equals(javaType)) {
 			result = "NUMERIC";
-		}
-		if ("Date".equals(javaType)) {
-			result = "DATE";
 		}
 		return result;
 	}
