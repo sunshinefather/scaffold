@@ -1,20 +1,21 @@
 package com.assets.utils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CookieUtil
 {
-  public static void setCookie(HttpServletResponse paramHttpServletResponse, String paramString1, String paramString2)
+  public static void setCookie(HttpServletResponse request, String param1, String param2)
   {
-    Cookie localCookie = new Cookie(paramString1, paramString2);
-    paramHttpServletResponse.addCookie(localCookie);
+    Cookie localCookie = new Cookie(param1, param2);
+    request.addCookie(localCookie);
   }
 
-  public static String getCookie(HttpServletRequest paramHttpServletRequest, String paramString)
+  public static String getCookie(HttpServletRequest request, String paramString)
   {
     String localObject = "";
-    Cookie[] arrayOfCookie = paramHttpServletRequest.getCookies();
+    Cookie[] arrayOfCookie = request.getCookies();
     Cookie localCookie = null;
     String str1 = null;
     String str2 = null;

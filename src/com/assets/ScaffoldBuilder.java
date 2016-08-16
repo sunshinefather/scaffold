@@ -13,7 +13,7 @@ import com.assets.utils.StringUtil;
 public class ScaffoldBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	protected final static String PKG_PREFIX = "com.zyt.web.after.";
+	protected final static String PKG_PREFIX = "com.wishcloud.web.module.";
 	protected final static String PKG_SUFFIX_MODEL = "bean.";
 	protected final static String PKG_SUFFIX_DAO = "dao.";
 	protected final static String PKG_SUFFIX_SERVICE = "service.";
@@ -66,6 +66,9 @@ public class ScaffoldBuilder {
 		
 		DevLog.debug(tableInfo.getFindByLike());
 		mapping.put("findByLike", tableInfo.getFindByLike());
+		
+		DevLog.debug(tableInfo.getFindByLikeWithPage());
+		mapping.put("findByLikePage", tableInfo.getFindByLikeWithPage());
 		
 		DevLog.debug(tableInfo.getSelectStatement());
 		mapping.put("selectStatement", tableInfo.getSelectStatement());

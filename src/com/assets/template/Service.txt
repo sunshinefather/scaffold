@@ -1,6 +1,6 @@
 package ${pkgPath};
 
-import com.zyt.web.publics.base.BaseService;
+import com.wishcloud.web.publics.base.BaseService;
 import ${beanPath};
 
 /**

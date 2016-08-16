@@ -184,9 +184,9 @@ public class TableInfo {
 			col = columns.get(i);
 			if(!col.getName().toLowerCase().equals(primaryKey.toLowerCase())){
 				if("String".equals(col.parseJavaType())){
-					sb.append(TAB3+"<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
+					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !=\"\" ' >"+ENDL);
 				}else{
-					sb.append(TAB3+"<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
+					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null '>"+ENDL);
 				}
 				sb.append(TAB4+col.getName() + "=#{" + col.parseFieldName() +"},"+ENDL);
 				sb.append(TAB3+"</if>"+ENDL);
@@ -234,7 +234,7 @@ public class TableInfo {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
 			sb.append(TAB3);
-			sb.append("<if test=\"" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != '' \" > ");
+			sb.append("<if test='" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != \"\" ' > ");
 			sb.append(" and "+ col.getName() +"=#{"+ col.parseFieldName()+"}");
 			sb.append("</if>");
 			sb.append(ENDL);
@@ -243,7 +243,7 @@ public class TableInfo {
 	}
 	
     /**
-     * 生成模糊查询条件
+     * 生成查询条件
      * @Description: TODO
      * @Title: getFindByLike 
      * @author: sunshine  
@@ -256,9 +256,9 @@ public class TableInfo {
 		for (ColumnInfo col : columns) {
 				sb.append(TAB3);
 				if("String".equals(col.parseJavaType())){
-					sb.append("<if test=\""+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !='' \">"+ENDL);
+					sb.append("<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !=\"\" ' >"+ENDL);
 				}else{
-					sb.append("<if test=\""+col.parseFieldName()+" !=null \">"+ENDL);
+					sb.append("<if test='"+col.parseFieldName()+" !=null ' >"+ENDL);
 				}
 				if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
 					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
@@ -267,6 +267,35 @@ public class TableInfo {
 					sb.append(TAB4+" and `"+ col.getName() +"`=#{"+ col.parseFieldName()+"}"+ENDL);
 				}
 				sb.append(TAB3+"</if>"+ENDL);
+		}
+		return sb.toString();
+	}
+	/**
+	 * 生成whereParameters查询条件
+	 * @Title: getFindByLikeWithPage
+	 * @Description: TODO  
+	 * @param: @return      
+	 * @return: String
+	 * @author: sunshine  
+	 * @throws
+	 */
+	public String getFindByLikeWithPage() {
+		StringBuffer sb = new StringBuffer();
+		String prefix="whereParameters.";
+		for (ColumnInfo col : columns) {
+			sb.append(TAB3);
+			if("String".equals(col.parseJavaType())){
+				sb.append("<if test='"+prefix+col.parseFieldName()+" !=null and "+prefix+col.parseFieldName()+" !=\"\" ' >"+ENDL);
+			}else{
+				sb.append("<if test='"+prefix+col.parseFieldName()+" !=null '>"+ENDL);
+			}
+			if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
+					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
+				sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+prefix+ col.parseFieldName()+"})>0 ]]>"+ENDL);
+			}else{
+				sb.append(TAB4+" and `"+ col.getName() +"`=#{"+prefix+col.parseFieldName()+"}"+ENDL);
+			}
+			sb.append(TAB3+"</if>"+ENDL);
 		}
 		return sb.toString();
 	}

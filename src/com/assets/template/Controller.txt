@@ -9,10 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.zyt.web.publics.base.BaseController;
-import com.zyt.web.publics.base.JsonEntity;
-import com.zyt.web.publics.mybatis.PaginationAble;
-import com.zyt.web.publics.utils.reflection.ReflectionUtils;
+import com.wishcloud.web.publics.base.BaseController;
+import com.wishcloud.web.publics.base.JsonEntity;
+import com.wishcloud.web.publics.base.mybatis.pagination.PaginationAble;
+import com.wishcloud.web.publics.utils.UUIDUtils;
+import com.wishcloud.web.publics.utils.reflection.ReflectionUtils;
 import ${beanPath};
 import ${servicePath};
 
@@ -59,6 +60,7 @@ public class ${clzName}Controller extends BaseController {
 	 */
 	@RequestMapping("/add")
 	public String add(Model model) {
+	    model.addAllAttributes(getParams());
 		return "after/${clzNameLC}/edit";
 	}
 
@@ -86,6 +88,7 @@ public class ${clzName}Controller extends BaseController {
 			return js;
 		}
 		if (StringUtils.isEmpty(${clzNameLC}.get${capitalizeKey}())) {
+		    ${clzNameLC}.set${capitalizeKey}(UUIDUtils.getUUIDCode());
 			js.setCode(${clzNameLC}Service.insert(${clzNameLC}));
 		} else {
 			js.setCode(${clzNameLC}Service.update(${clzNameLC}));
