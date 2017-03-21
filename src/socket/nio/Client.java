@@ -43,9 +43,8 @@ public class Client implements Runnable {
     }
     
     private void doConnect() throws IOException{
-    	System.out.println("是否连接的:"+socketChannel.isConnected());
-    	if(socketChannel.connect(new InetSocketAddress(host,port))){
-    		System.out.println("if是否连接的:"+socketChannel.isConnected());
+    	boolean isConnection = socketChannel.connect(new InetSocketAddress(host,port));
+    	if(isConnection){
     		socketChannel.register(seletor,SelectionKey.OP_READ);
     		dowirte(socketChannel,"获取当前时间:");
     	}else{
@@ -59,13 +58,27 @@ public class Client implements Runnable {
     		if(key.isConnectable()){
     			if(sc.finishConnect()){
     				sc.register(seletor, SelectionKey.OP_READ);
-    				dowirte(sc,"给我时间");
+    				dowirte(sc,"获取当前时间:");
     			}else{
     				System.exit(1);
     			}
     		}
     		if(key.isReadable()){
-    			
+    			ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+    			int readBytes = sc.read(readBuffer);
+    			if(readBytes>0){
+    				readBuffer.flip();
+    				byte[] bytes  = new byte[readBuffer.remaining()]; 
+    				readBuffer.get(bytes);
+    				String body =new String(bytes, "utf-8");
+    				System.out.println(Thread.currentThread().getName()+"-Now is:"+body);
+    				this.stop=true;
+    			}else if(readBytes<0){
+    				key.cancel();
+    				sc.close();
+    			}else{
+    				//
+    			}
     		}
     	}else{
     		System.out.println("无效的...");
@@ -74,7 +87,7 @@ public class Client implements Runnable {
     
 	private void dowirte(SocketChannel sc,String msg) throws IOException{
 		if(msg!=null && msg.trim().length()>0){
-			byte[] bytes =msg.getBytes("gb2312");
+			byte[] bytes =msg.getBytes("utf-8");
 			ByteBuffer bb =ByteBuffer.allocate(bytes.length);
 			bb.put(bytes);
 			bb.flip();

@@ -37,7 +37,7 @@ public class Server implements Runnable {
 
 	private void dowirte(SocketChannel sc,String msg) throws IOException{
 		if(msg!=null && msg.trim().length()>0){
-			byte[] bytes =msg.getBytes("gb2312");
+			byte[] bytes =msg.getBytes("utf-8");
 			ByteBuffer bb =ByteBuffer.allocate(bytes.length);
 			bb.put(bytes);
 			bb.flip();
@@ -66,7 +66,7 @@ public class Server implements Runnable {
     				bbf.flip();
     				byte[] bt=new byte[bbf.remaining()];
     				bbf.get(bt);
-    				System.out.println(new String(bt, "GBK"));
+    				System.out.println(new String(bt, "utf-8"));
     				dowirte(sc, "鲜虎:"+new Date().toString());
     			}else if(rt==0){
     				System.out.println("未读取到数据....");
