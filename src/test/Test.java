@@ -39,14 +39,5 @@ public class Test {
 		}  
 	public static void main(String[] args) throws Exception {
 		
-		for(byte b:int2ByteArray(232)){
-			System.out.print(b+" ");
-		}
-		System.out.println();
-		for(byte b:toByteArray(232)){
-			System.out.print(b+" ");
-		}
-		System.out.println();
-		System.out.println(bytesToInt(toByteArray(232)));
     }
 }
