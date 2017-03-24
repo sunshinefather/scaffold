@@ -1,4 +1,5 @@
-package socket.nio;
+package socket.netty;
+
 
 
 public class Test {
@@ -8,14 +9,7 @@ public class Test {
 		if(args!=null && args.length>0){
 			port =Integer.parseInt(args[0]);
 		}
-		int i=10000;
-		while(i-->0){
-			Client client =new Client(port,"127.0.0.1");
-			Thread clientThread = new Thread(client,"客户端"+i);
-			clientThread.start();	
-		}
-
-		//server.stop();
+        new Client().connect(port, "127.0.0.1");
 	} catch (Exception e) {
 		e.printStackTrace();
 	}

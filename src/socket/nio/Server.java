@@ -25,7 +25,7 @@ public class Server implements Runnable {
 		try {
 			seletor =Selector.open();
 			acceptorSvr = ServerSocketChannel.open();
-			acceptorSvr.configureBlocking(false);	
+			acceptorSvr.configureBlocking(false);
 			acceptorSvr.bind(new InetSocketAddress(this.port),2048);
 			acceptorSvr.register(seletor, SelectionKey.OP_ACCEPT);
 		} catch (IOException e) {

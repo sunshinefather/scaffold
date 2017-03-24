@@ -8,6 +8,7 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.24.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/netty-all-4.1.9.Final.jar" sourcepath="C:/Users/Administrator/Desktop/电子书/netty/netty-4.1.9.Final/jar/all-in-one/netty-all-4.1.9.Final-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
