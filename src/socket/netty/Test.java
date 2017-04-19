@@ -10,6 +10,7 @@ public class Test {
 			port =Integer.parseInt(args[0]);
 		}
         new Client().connect(port, "127.0.0.1");
+       // Thread.sleep(10*1000);
 	} catch (Exception e) {
 		e.printStackTrace();
 	}

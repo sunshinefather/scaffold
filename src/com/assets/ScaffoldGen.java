@@ -1,5 +1,6 @@
 package com.assets;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,7 +103,7 @@ public class ScaffoldGen {
 	 */
 	private boolean initConnection() {
 		
-		Configuration config;
+		Properties config;
 		
 		String driver = null;
 		String url = StringUtils.EMPTY;
@@ -113,12 +111,13 @@ public class ScaffoldGen {
 		String password = StringUtils.EMPTY;
 		String schema = StringUtils.EMPTY;
 		try {
-			config = new PropertiesConfiguration(CONFIG_PROPERTIES);
-			driver = config.getString(JDBC_DRIVER);
-			url = config.getString(JDBC_URL);
-			user = config.getString(JDBC_USER);
-			password = config.getString(JDBC_PASSWORD);
-			schema = config.getString(JDBC_SCHEMA);
+			config = new Properties();
+			config.load(this.getClass().getClassLoader().getResourceAsStream(CONFIG_PROPERTIES));
+			driver = config.getProperty(JDBC_DRIVER);
+			url = config.getProperty(JDBC_URL);
+			user = config.getProperty(JDBC_USER);
+			password = config.getProperty(JDBC_PASSWORD);
+			schema = config.getProperty(JDBC_SCHEMA);
 			if (StringUtil.isNotBlank(schema)) {
 				this.schema = schema;
 			}
@@ -126,7 +125,7 @@ public class ScaffoldGen {
 				this.schema = user.toUpperCase();
 			}
 			Class.forName(driver);
-		} catch (ConfigurationException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 			log.fatal("Jdbc连接配置文件不能找到 - " + CONFIG_PROPERTIES);
 			return false;
