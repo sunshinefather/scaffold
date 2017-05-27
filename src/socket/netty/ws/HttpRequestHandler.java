@@ -26,16 +26,13 @@ import java.net.URL;
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>{
     
     private final String wsUri;
-    private static final File INDEX;
-    
+    private static final File homePage;
     static {
     	try {
-    	//URL location = HttpRequestHandler.class.getProtectionDomain().getCodeSource().getLocation();
-    	URL location = HttpRequestHandler.class.getClassLoader().getResource("WebsocketChatClient.html");
-    	System.out.println(HttpRequestHandler.class.getProtectionDomain().toString());
-    	String path = location.toURI().toString() + "WebsocketChatClient.html";
-    	path = !path.contains("file:") ? path : path.substring(5);
-    	INDEX = new File(path);
+	    	URL location = HttpRequestHandler.class.getClassLoader().getResource("WebsocketChatClient.html");
+	    	String path = location.toURI().toString();
+	    	path = !path.contains("file:") ? path : path.substring(5);
+	    	homePage = new File(path);
     	} catch (Exception e) {
     	  throw new IllegalStateException("初始化错误...", e);
     	}
@@ -51,11 +48,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
 	    if(wsUri.equalsIgnoreCase(request.uri())){
 	    	ctx.fireChannelRead(request.retain());
-	    }else{
+	    }else if("/".equals(request.uri())){
 	    	if(HttpUtil.is100ContinueExpected(request)){
 	    		send100Continue(ctx);
 	    	}
-	    	RandomAccessFile file = new RandomAccessFile(INDEX, "r");
+	    	RandomAccessFile file = new RandomAccessFile(homePage, "r");
 	    	HttpResponse response = new DefaultHttpResponse(request.protocolVersion(), HttpResponseStatus.OK);
 	    	response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
 	    	boolean keepAlive = HttpUtil.isKeepAlive(request);

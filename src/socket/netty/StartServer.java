@@ -1,7 +1,8 @@
 package socket.netty;
 
+
 public class StartServer {
-public static void main(String[] args) {
+public static void main(String[] args){
 	int port =9999;
 	try {
 		if(args!=null && args.length>0){

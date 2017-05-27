@@ -2,8 +2,9 @@ package socket.netty;
 
 
 
+
 public class Test {
- public static void main(String[] args) {
+ public static void main(String[] args) throws Exception {
 	int port =9999;
 	try {
 		if(args!=null && args.length>0){
