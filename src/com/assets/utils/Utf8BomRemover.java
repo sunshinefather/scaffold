@@ -124,7 +124,7 @@ public class Utf8BomRemover{
 	        }  
 	    }
 	    public static void main(String[] args) throws IOException {  
-	        String path = "F:\\zyt_project\\ImCrm\\src\\";
+	        String path = "F:/zyt_project/yunbao_module/yunbao-mom/src/main/java/com/mdks/module";
 	        DealSrcFiles(path);
 	    }  
 	}

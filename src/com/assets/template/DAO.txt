@@ -1,12 +1,12 @@
 package ${pkgPath};
 
-import com.wishcloud.web.publics.base.BaseDAO;
+import com.mdks.common.base.BaseDAO;
 import ${beanPath};
 
 /**
  * ${moduleNameCN}Dao
  * @ClassName:  ${clzName}Dao   
- * @Description:TODO   
+ * @Description:   
  * @author: ${author} 
  */
 public interface ${clzName}Dao extends BaseDAO<${clzName}> {

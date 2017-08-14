@@ -1,6 +1,6 @@
 package ${pkgPath};
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,11 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.wishcloud.web.publics.base.BaseController;
-import com.wishcloud.web.publics.base.JsonEntity;
-import com.wishcloud.web.publics.base.mybatis.pagination.PaginationAble;
-import com.wishcloud.web.publics.utils.UUIDUtils;
-import com.wishcloud.web.publics.utils.reflection.ReflectionUtils;
+import com.mdks.common.base.BaseController;
+import com.mdks.common.pojo.JsonEntity;
+import com.mdks.common.pojo.PageEntity;
+import com.mdks.common.utils.UtilsUUID;
+import com.mdks.common.utils.reflection.ReflectionUtils;
 import ${beanPath};
 import ${servicePath};
 
@@ -35,10 +35,10 @@ public class ${clzName}Controller extends BaseController {
 	 * @Description: 分页获取${moduleNameCN}列表数据
 	 */
 	@RequestMapping("/list")
-	public String list(Model model, PaginationAble page){
+	public String list(Model model, PageEntity page){
 		page.setWhereParameters(getParams());
 		model.addAttribute("page", page);
-		model.addAttribute("list", ${clzNameLC}Service.findList(page));
+		model.addAttribute("list", ${clzNameLC}Service.findList(page.getWhereParameters()));
 		return "after/${clzNameLC}/list";
 	}
 	
@@ -67,7 +67,7 @@ public class ${clzName}Controller extends BaseController {
 	/**
 	 * 更具ID获取${moduleNameCN}信息
 	 * @Title: edit
-	 * @Description: TODO
+	 * @Description:
 	 */
 	@RequestMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable(value="id") String ${parserKey}) {
@@ -78,7 +78,7 @@ public class ${clzName}Controller extends BaseController {
 	/**
 	 * 保存${moduleNameCN}
 	 * @Title: saveOrUpdate
-	 * @Description: TODO
+	 * @Description:
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
@@ -88,7 +88,7 @@ public class ${clzName}Controller extends BaseController {
 			return js;
 		}
 		if (StringUtils.isEmpty(${clzNameLC}.get${capitalizeKey}())) {
-		    ${clzNameLC}.set${capitalizeKey}(UUIDUtils.getUUIDCode());
+		    ${clzNameLC}.set${capitalizeKey}(UtilsUUID.getUUID());
 			js.setCode(${clzNameLC}Service.insert(${clzNameLC}));
 		} else {
 			js.setCode(${clzNameLC}Service.update(${clzNameLC}));
@@ -99,7 +99,7 @@ public class ${clzName}Controller extends BaseController {
 	/**
 	 * 删除${moduleNameCN}
 	 * @Title: delete${clzName}
-	 * @Description: TODO
+	 * @Description:
 	 */
 	@RequestMapping("/del")
 	@ResponseBody
@@ -112,7 +112,7 @@ public class ${clzName}Controller extends BaseController {
 	
 	/**
 	 * 通用ajax校验
-	 * @Description: TODO
+	 * @Description:
 	 * @Title: validate
 	 * @author: sunshine 
 	 */

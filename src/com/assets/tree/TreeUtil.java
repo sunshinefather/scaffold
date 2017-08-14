@@ -13,9 +13,14 @@ import java.util.List;
 public class TreeUtil {
     /**
      * 根据父节点的ID获取所有子节点
+     * @Title: getAllChildNodes
      * @param list 分类表
      * @param typeId 传入的父节点ID
-     * @return String
+     * @param: @param queryLeafNode 是否查询叶子节点
+     * @param: @return      
+     * @return: List<ITree>
+     * @author: sunshine  
+     * @throws
      */
     public static List<ITree> getAllChildNodes(List<ITree> list, ITree parentNode,boolean... queryLeafNode) {
         if(list == null || parentNode == null) return null;

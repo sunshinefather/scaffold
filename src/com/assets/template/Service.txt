@@ -1,6 +1,6 @@
 package ${pkgPath};
 
-import com.wishcloud.web.publics.base.BaseService;
+import com.mdks.common.base.BaseService;
 import ${beanPath};
 
 /**

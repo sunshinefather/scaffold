@@ -270,35 +270,6 @@ public class TableInfo {
 		}
 		return sb.toString();
 	}
-	/**
-	 * 生成whereParameters查询条件
-	 * @Title: getFindByLikeWithPage
-	 * @Description: TODO  
-	 * @param: @return      
-	 * @return: String
-	 * @author: sunshine  
-	 * @throws
-	 */
-	public String getFindByLikeWithPage() {
-		StringBuffer sb = new StringBuffer();
-		String prefix="whereParameters.";
-		for (ColumnInfo col : columns) {
-			sb.append(TAB3);
-			if("String".equals(col.parseJavaType())){
-				sb.append("<if test='"+prefix+col.parseFieldName()+" !=null and "+prefix+col.parseFieldName()+" !=\"\" ' >"+ENDL);
-			}else{
-				sb.append("<if test='"+prefix+col.parseFieldName()+" !=null '>"+ENDL);
-			}
-			if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
-					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
-				sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+prefix+ col.parseFieldName()+"})>0 ]]>"+ENDL);
-			}else{
-				sb.append(TAB4+" and `"+ col.getName() +"`=#{"+prefix+col.parseFieldName()+"}"+ENDL);
-			}
-			sb.append(TAB3+"</if>"+ENDL);
-		}
-		return sb.toString();
-	}
     /**
      * 生成所有字段
      * @Description: TODO

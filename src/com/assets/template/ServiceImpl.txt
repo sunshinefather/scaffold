@@ -3,12 +3,12 @@ package ${pkgPath};
 import ${servicePath};
 import ${daoPath};
 import ${beanPath};
-import com.wishcloud.web.publics.base.BaseDAO;
+import com.mdks.common.base.BaseDAO;
 import org.springframework.stereotype.Service;
-import com.wishcloud.web.publics.base.AbstractServiceImpl;
+import com.mdks.common.base.AbstractServiceImpl;
 import javax.annotation.Resource;
 import java.util.List;
-import com.wishcloud.web.publics.base.mybatis.pagination.PaginationAble;
+import java.util.Map;
 
 /**
  * @Description:${moduleNameCN}业务层实现类
@@ -47,8 +47,8 @@ public class ${clzName}ServiceImpl extends AbstractServiceImpl<${clzName}> imple
 	}
 
 	@Override
-	public List<${clzName}> findList(PaginationAble paginationAble) {
-		return super.findList(paginationAble);
+	public List<${clzName}> findList(Map<String, Object> map) {
+		return super.findList(map);
 	}
 
 	@Override
