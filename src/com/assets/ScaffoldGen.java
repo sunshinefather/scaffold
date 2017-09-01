@@ -27,13 +27,13 @@ public class ScaffoldGen {
 	private static final String JDBC_SCHEMA = "jdbc.schema";//数据库所有者
 	private static final String CONFIG_PROPERTIES = "jdbc.properties";//配置文件
 	private final Log log = LogFactory.getLog(getClass());
-	private Connection conn;//连接
-	private String schema;
-	private DatabaseMetaData metaData;//源数据
-	private final String className;//类名
-	private final String tblName;//表名
-	private final String moduleName;//模块名
-	private final String moduleNameCN;//模块名
+	private Connection conn=null;//连接
+	private String schema=null;
+	private DatabaseMetaData metaData=null;//源数据
+	private String className=null;//类名
+	private String tblName=null;//表名
+	private String moduleName=null;//模块名
+	private String moduleNameCN=null;//模块名
     /**
      * 构造方法1
      * @Title:  ScaffoldGen   
@@ -56,8 +56,8 @@ public class ScaffoldGen {
      * @param:  @param tblName 表名
      * @throws
      */
-	public ScaffoldGen(String className, String tblName,String moduleNameCN) {
-		this(className,className,tblName,moduleNameCN);
+	public ScaffoldGen(String moduleName, String tblName,String moduleNameCN) {
+		this(moduleName,null,tblName,moduleNameCN);
 	}
 	/**
 	 * 
@@ -72,7 +72,9 @@ public class ScaffoldGen {
 	public ScaffoldGen(String moduleName,String className, String tblName,String moduleNameCN) {
 		this.moduleName=moduleName;
 		this.moduleNameCN=moduleNameCN;
-		this.className = StringUtils.capitalize(className);//首字母大写
+		if(StringUtil.isNotBlank(className)){
+			this.className = StringUtils.capitalize(className);//首字母大写
+		}
 		this.tblName = tblName.toLowerCase();//转换成全小写
 	}
 	
@@ -85,7 +87,7 @@ public class ScaffoldGen {
 		if (tableInfo == null) {
 			return;
 		}
-		ScaffoldBuilder sf = new ScaffoldBuilder(this.moduleName,this.className, tableInfo,this.moduleNameCN);
+		ScaffoldBuilder sf = new ScaffoldBuilder(this.moduleName,tableInfo,this.moduleNameCN);
 		List<FileGenerator> list = sf.buildGenerators();
 		for (FileGenerator gen : list) {
 			 gen.execute();
@@ -171,6 +173,9 @@ public class ScaffoldGen {
 	 */
 	private TableInfo parseDbTable(String tableName) throws SQLException {
 		TableInfo tableInfo = new TableInfo(tableName);
+		if(StringUtil.isNotBlank(className)){
+			tableInfo.setClassName(className);
+		}
 		ResultSet rs = null;
 		log.trace("解析表开始...");
 		try {

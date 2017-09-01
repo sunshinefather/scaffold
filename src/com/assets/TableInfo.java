@@ -2,8 +2,8 @@ package com.assets;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
+import com.assets.wordsparser.UnderlineSplitWordsParser;
 /**
  * 表信息
  * @ClassName:  TableInfo   
@@ -18,13 +18,14 @@ public class TableInfo {
 	private final String TAB3 = TAB2 + TAB1;
 	private final String TAB4 = TAB2 + TAB2;
 	private String name;
+	private String className;
 	private String tablePK;//主键
 	private String beanPK;//转换后的主键(小写)
 	private List<ColumnInfo> columns;//table字段集
 	private List<PropertyInfo> fields;//bean属性集
 
 	public TableInfo(String name) {
-		this.name = name;
+		 setName(name);
 	}
 
 	public String getName() {
@@ -32,7 +33,16 @@ public class TableInfo {
 	}
 
 	public void setName(String name) {
+		this.className=StringUtils.capitalize(new UnderlineSplitWordsParser().parseWords(name));
 		this.name = name;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 	public String getPrimaryKey() {
@@ -96,16 +106,32 @@ public class TableInfo {
 	public String getPropertysDeclareInfo() {
 		StringBuffer sb = new StringBuffer();//属性
 		StringBuffer sb1 = new StringBuffer();//get()和set()方法
+		StringBuffer sb2 = new StringBuffer();//toString()方法
+		sb2.append(TAB1+"@Override"+ENDL);
+		sb2.append(TAB1+"public String toString() {"+ENDL);
+		sb2.append(TAB2+"return \"[");
+		sb2.append(getClassName());
+		sb2.append(" [");
+		boolean isFirst=true;
 		for (PropertyInfo field : fields) {
 			String name=field.getName();
 			String type=field.getType();
 			if(field.getRemarks()!=null && !"".equals(field.getRemarks().trim())){
 				sb.append(TAB1+"/**"+field.getRemarks()+"*/"+ENDL);
 			}
+			if(!isFirst){
+				sb2.append(", ");	
+				isFirst=false;
+			}
+			sb2.append(name);
+			sb2.append("=\"");
+			sb2.append(" + ");
+			sb2.append(name);
+			sb2.append(" + \"");
 			sb.append(TAB1+"private "+type+" "+name+";"+ENDL);
 			//set()
 			sb1.append(TAB1+"public void set" + StringUtils.capitalize(name)+ 
-					"( " + type + " " + name + " ) {"+ENDL);
+					"(" + type + " " + name + ") {"+ENDL);
 			        sb1.append(TAB1);
 			        sb1.append(TAB1);
 					sb1.append("this." + name + " = " + name + ";"+ENDL);
@@ -119,7 +145,9 @@ public class TableInfo {
 					        sb1.append(TAB1);
 							sb1.append( "}"+ENDL);	
 		}
-		return sb.toString()+sb1.toString();
+		sb2.append("]\";"+ENDL);
+		sb2.append(TAB1+"}");
+		return sb.toString()+sb1.toString()+sb2.toString();
 	}
 	/**
 	 * 生成bean需要导入的包
@@ -188,7 +216,7 @@ public class TableInfo {
 				sb.append(",");
 			}
 		}
-		sb.append(" )");
+		sb.append(")");
 		return sb.toString();
 	}
     /**

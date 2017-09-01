@@ -9,9 +9,7 @@ ${resultMap}
 	</sql>
 	
 	<insert id="insert" parameterType="${className}">
-		 <![CDATA[
-            ${insertSql}
-	     ]]>
+		${insertSql}
 	</insert>
 	
 	<select id="findObjectById" parameterType="String" resultMap="baseResult">

@@ -28,21 +28,19 @@ public class ScaffoldBuilder {
 	protected final static String AUTHOR="sunshine";
 	
 	protected String pkgName;//模块基本包路径
-	protected String className;
 	protected TableInfo tableInfo;
 	protected String moduleName;
 	protected String moduleNameCN;
 	private final Map<String, String> mapping;//标签
 
-	public ScaffoldBuilder(String moduleName,String className, TableInfo tableInfo,String moduleNameCN) {
+	public ScaffoldBuilder(String moduleName, TableInfo tableInfo,String moduleNameCN) {
 		this.moduleName=moduleName;
 		this.moduleNameCN=moduleNameCN;
 		this.pkgName = PKG_PREFIX+StringUtils.lowerCase(this.moduleName)+StringUtil.DOT;
-		this.className = className;
 		this.tableInfo = tableInfo;
 		mapping = new HashMap<String, String>();
-		mapping.put("className", className);//bean名称
-		mapping.put("lcfClassName", StringUtils.uncapitalize(className));//首字母小写的bean名称
+		mapping.put("className",tableInfo.getClassName());//bean名称
+		mapping.put("lcfClassName", StringUtils.uncapitalize(tableInfo.getClassName()));//首字母小写的bean名称
 		mapping.put("tblName", tableInfo.getName());//表名
 		mapping.put("moduleNameCN", moduleNameCN);//模块中文名称(表备注)
 		mapping.put("beanPath", getBeanPath());//bean生成的路径,
@@ -89,7 +87,7 @@ public class ScaffoldBuilder {
 	 * @date: 2014年4月11日 上午11:12:44
 	 */
 	public String getBeanPath() {
-		return pkgName + PKG_SUFFIX_MODEL + className;
+		return pkgName + PKG_SUFFIX_MODEL + tableInfo.getClassName();
 	}
 	
     /**
@@ -103,7 +101,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:47:52
      */
 	public String getDaoPath() {
-		return pkgName + PKG_SUFFIX_DAO + className + DAO_SUFFIX;
+		return pkgName + PKG_SUFFIX_DAO + tableInfo.getClassName() + DAO_SUFFIX;
 	}
 	
     /**
@@ -117,7 +115,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:51:40
      */
 	public String getServicePath() {
-		return pkgName + PKG_SUFFIX_SERVICE +"I"+className + SERVICE_SUFFIX;
+		return pkgName + PKG_SUFFIX_SERVICE +"I"+tableInfo.getClassName() + SERVICE_SUFFIX;
 	}
 	
     /**
@@ -131,7 +129,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:52:05
      */
 	public String getServiceImplPath() {
-		return pkgName+ PKG_SUFFIX_SERVICE + PKG_IMPL + StringUtil.DOT + className + "Service"
+		return pkgName+ PKG_SUFFIX_SERVICE + PKG_IMPL + StringUtil.DOT + tableInfo.getClassName() + "Service"
 				+ StringUtils.capitalize(PKG_IMPL);
 	}
     /**
@@ -142,20 +140,20 @@ public class ScaffoldBuilder {
 		List<FileGenerator> list = new ArrayList<FileGenerator>();
 		
 		// bean
-		list.add(new FileGenerator(pkgName + "bean", className, "Bean.txt", mapping));
+		list.add(new FileGenerator(pkgName + "bean", tableInfo.getClassName(), "Bean.txt", mapping));
 		
 		// dao
-		list.add(new FileGenerator(pkgName + "dao", className + "Dao", "DAO.txt", mapping));
+		list.add(new FileGenerator(pkgName + "dao", tableInfo.getClassName() + "Dao", "DAO.txt", mapping));
 		
 		// Service
-		list.add(new FileGenerator(pkgName + "service", "I"+className + "Service", "Service.txt", mapping));
-		list.add(new FileGenerator(pkgName + "service.impl", className + "ServiceImpl", "ServiceImpl.txt", mapping));
+		list.add(new FileGenerator(pkgName + "service", "I"+tableInfo.getClassName() + "Service", "Service.txt", mapping));
+		list.add(new FileGenerator(pkgName + "service.impl", tableInfo.getClassName() + "ServiceImpl", "ServiceImpl.txt", mapping));
 	
 		//mybatisSQL映射配置文件
-		list.add(new FileGenerator(pkgName + "mappers", className+"Mapper", "SqlMap.txt", mapping, "xml"));
+		list.add(new FileGenerator(pkgName + "mappers", tableInfo.getClassName()+"Mapper", "SqlMap.txt", mapping, "xml"));
 		
 		// controller
-		list.add(new FileGenerator(pkgName + "controller", className + "Controller", "Controller.txt", mapping));
+		list.add(new FileGenerator(pkgName + "controller", tableInfo.getClassName() + "Controller", "Controller.txt", mapping));
 
 		return list;
 	}
