@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="${daoPath}">
- 	<resultMap id="baseResult" type="${clzName}">
+ 	<resultMap id="baseResult" type="${className}">
 ${resultMap}
 	</resultMap>
 	<sql id="columns">
 		${columnNames}
 	</sql>
 	
-	<insert id="insert" parameterType="${clzName}">
+	<insert id="insert" parameterType="${className}">
 		 <![CDATA[
-            ${insertStatement}
+            ${insertSql}
 	     ]]>
 	</insert>
 	
 	<select id="findObjectById" parameterType="String" resultMap="baseResult">
-		${selectStatement} 
+		${selectSql} 
 		where
-		${primaryKey}=#{id}
+		${tablePK}=#{id}
 	</select>
 	
 	<select id="findList" resultMap="baseResult" parameterType="map">
-		${selectStatement}
+		${selectSql}
 			<where>
 ${findByLike}
 			</where> 
-        order by ${primaryKey} desc
+        order by ${tablePK} desc
 	</select>
-	<select id="loadList" parameterType="${clzName}" resultMap="baseResult">
-	   	${selectStatement}
+	<select id="loadList" parameterType="${className}" resultMap="baseResult">
+	   	${selectSql}
 		<where>
 ${findByLike}
 		</where> 
-        order by ${primaryKey} desc
+        order by ${tablePK} desc
 	</select>
-	<update id="update" parameterType="${clzName}">
-${updateStatement}
+	<update id="update" parameterType="${className}">
+${updateSql}
 	</update>
 	
 	<delete id="delete" parameterType="string">
-		delete from ${tblName} where ${primaryKey} in 
+		delete from ${tblName} where ${tablePK} in 
 	   <foreach collection="array" close=")" open="(" separator="," item="item">
 		      #{item}
 	   </foreach>
 	</delete>
 	<select id="maxid" resultType="int">
-	    select max(${primaryKey}) id from ${tblName}
+	    select max(${tablePK}) id from ${tblName}
 	</select>
-	<select id="validate" parameterType="${clzName}" resultType="int">
+	<select id="validate" parameterType="${className}" resultType="int">
       select count(1) as ct from ${tblName} 
         <where>
            <include refid="other_condition"/>

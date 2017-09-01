@@ -28,57 +28,54 @@ public class ScaffoldBuilder {
 	protected final static String AUTHOR="sunshine";
 	
 	protected String pkgName;//模块基本包路径
-	protected String clzName;
+	protected String className;
 	protected TableInfo tableInfo;
 	protected String moduleName;
 	protected String moduleNameCN;
 	private final Map<String, String> mapping;//标签
 
-	public ScaffoldBuilder(String moduleName,String clzName, TableInfo tableInfo,String moduleNameCN) {
+	public ScaffoldBuilder(String moduleName,String className, TableInfo tableInfo,String moduleNameCN) {
 		this.moduleName=moduleName;
 		this.moduleNameCN=moduleNameCN;
 		this.pkgName = PKG_PREFIX+StringUtils.lowerCase(this.moduleName)+StringUtil.DOT;
-		this.clzName = clzName;
+		this.className = className;
 		this.tableInfo = tableInfo;
 		mapping = new HashMap<String, String>();
-		mapping.put("clzName", clzName);//bean名称
-		mapping.put("moduleNameCN", moduleNameCN);//bean名称
-		mapping.put("clzNameLC", StringUtils.uncapitalize(clzName));//首字母小写的bean名称
+		mapping.put("className", className);//bean名称
+		mapping.put("lcfClassName", StringUtils.uncapitalize(className));//首字母小写的bean名称
 		mapping.put("tblName", tableInfo.getName());//表名
-		mapping.put("beanPath", getBeanPath());
-		mapping.put("daoPath", getDaoPath());
-		mapping.put("servicePath", getServicePath());
-		mapping.put("serviceImplPath", getServiceImplPath());
-		//bean的属性
-		mapping.put("propertysDeclareInfo", tableInfo.getPropertysDeclareInfo());
-		//结果集配置映射文件
-		mapping.put("resultMap", tableInfo.getResultMap());
-		//其他条件配置映射文件
-		mapping.put("otherCondition", tableInfo.getOtherCondition());		
-
+		mapping.put("moduleNameCN", moduleNameCN);//模块中文名称(表备注)
+		mapping.put("beanPath", getBeanPath());//bean生成的路径,
+		mapping.put("daoPath", getDaoPath());//dao接口生成的路径
+		mapping.put("servicePath", getServicePath());//service接口生成的路径
+		mapping.put("serviceImplPath", getServiceImplPath());//service接口实现生成的路径
+		mapping.put("propertysDeclareInfo", tableInfo.getPropertysDeclareInfo());//bean的属性
+		mapping.put("resultMap", tableInfo.getResultMap());//结果集配置映射文件
+		mapping.put("otherCondition", tableInfo.getOtherCondition());//其他条件配置映射文件	
 		DevLog.debug(tableInfo.getPrimaryKey());
-		mapping.put("primaryKey", tableInfo.getPrimaryKey());
+		mapping.put("tablePK", tableInfo.getPrimaryKey());//表中的主键
 		
 		DevLog.debug(tableInfo.getParserKey());
-		mapping.put("parserKey", tableInfo.getParserKey());
+		mapping.put("beanPK", tableInfo.getParserKey());//转换后的bean对应的主键
 		
-		mapping.put("capitalizeKey",StringUtils.capitalize(tableInfo.getParserKey()));
+		mapping.put("ucfBeanPK",StringUtils.capitalize(tableInfo.getParserKey()));//首字母大写的bean对应的主键
 		
 		DevLog.debug(tableInfo.getFindByLike());
-		mapping.put("findByLike", tableInfo.getFindByLike());
+		mapping.put("findByLike", tableInfo.getFindByLike());//按条件查找语句
 		
 		DevLog.debug(tableInfo.getSelectStatement());
-		mapping.put("selectStatement", tableInfo.getSelectStatement());
+		mapping.put("selectSql", tableInfo.getSelectStatement());//查询语句表达式
 		
 		DevLog.debug(tableInfo.getInsertStatement());
-		mapping.put("insertStatement", tableInfo.getInsertStatement());
+		mapping.put("insertSql", tableInfo.getInsertStatement());//插入语句
 		
 		DevLog.debug(tableInfo.getInsertStatement());
-		mapping.put("columnNames", tableInfo.getColumnNames());
+		mapping.put("columnNames", tableInfo.getColumnNames());//所有字段
 		
 		DevLog.debug(tableInfo.getUpdateStatement());
-		mapping.put("updateStatement", tableInfo.getUpdateStatement());
-		mapping.put("author",AUTHOR);
+		mapping.put("updateSql", tableInfo.getUpdateStatement());//修改sql语句
+		mapping.put("author",AUTHOR);//作者
+		mapping.put("beanImports",tableInfo.getModelImports());//bean需要导入的类
 	}
 	
 	/**
@@ -92,7 +89,7 @@ public class ScaffoldBuilder {
 	 * @date: 2014年4月11日 上午11:12:44
 	 */
 	public String getBeanPath() {
-		return pkgName + PKG_SUFFIX_MODEL + clzName;
+		return pkgName + PKG_SUFFIX_MODEL + className;
 	}
 	
     /**
@@ -106,7 +103,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:47:52
      */
 	public String getDaoPath() {
-		return pkgName + PKG_SUFFIX_DAO + clzName + DAO_SUFFIX;
+		return pkgName + PKG_SUFFIX_DAO + className + DAO_SUFFIX;
 	}
 	
     /**
@@ -120,7 +117,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:51:40
      */
 	public String getServicePath() {
-		return pkgName + PKG_SUFFIX_SERVICE +"I"+clzName + SERVICE_SUFFIX;
+		return pkgName + PKG_SUFFIX_SERVICE +"I"+className + SERVICE_SUFFIX;
 	}
 	
     /**
@@ -134,7 +131,7 @@ public class ScaffoldBuilder {
      * @date: 2014年4月11日 上午11:52:05
      */
 	public String getServiceImplPath() {
-		return pkgName+ PKG_SUFFIX_SERVICE + PKG_IMPL + StringUtil.DOT + clzName + "Service"
+		return pkgName+ PKG_SUFFIX_SERVICE + PKG_IMPL + StringUtil.DOT + className + "Service"
 				+ StringUtils.capitalize(PKG_IMPL);
 	}
     /**
@@ -145,20 +142,20 @@ public class ScaffoldBuilder {
 		List<FileGenerator> list = new ArrayList<FileGenerator>();
 		
 		// bean
-		list.add(new FileGenerator(pkgName + "bean", clzName, "Model.txt", mapping));
+		list.add(new FileGenerator(pkgName + "bean", className, "Bean.txt", mapping));
 		
 		// dao
-		list.add(new FileGenerator(pkgName + "dao", clzName + "Dao", "DAO.txt", mapping));
+		list.add(new FileGenerator(pkgName + "dao", className + "Dao", "DAO.txt", mapping));
 		
 		// Service
-		list.add(new FileGenerator(pkgName + "service", "I"+clzName + "Service", "Service.txt", mapping));
-		list.add(new FileGenerator(pkgName + "service.impl", clzName + "ServiceImpl", "ServiceImpl.txt", mapping));
+		list.add(new FileGenerator(pkgName + "service", "I"+className + "Service", "Service.txt", mapping));
+		list.add(new FileGenerator(pkgName + "service.impl", className + "ServiceImpl", "ServiceImpl.txt", mapping));
 	
 		//mybatisSQL映射配置文件
-		list.add(new FileGenerator(pkgName + "mappers", clzName+"Mapper", "SqlMap.txt", mapping, "xml"));
+		list.add(new FileGenerator(pkgName + "mappers", className+"Mapper", "SqlMap.txt", mapping, "xml"));
 		
 		// controller
-		list.add(new FileGenerator(pkgName + "controller", clzName + "Controller", "Controller.txt", mapping));
+		list.add(new FileGenerator(pkgName + "controller", className + "Controller", "Controller.txt", mapping));
 
 		return list;
 	}

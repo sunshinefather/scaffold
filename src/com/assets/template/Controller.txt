@@ -18,16 +18,16 @@ import ${beanPath};
 import ${servicePath};
 
 /**
- * @ClassName: ${clzName}Controller
+ * @ClassName: ${className}Controller
  * @Description:${moduleNameCN}控制层
  * @author: ${author}
  */
 @Controller
-@RequestMapping("/after/${clzNameLC}")
-public class ${clzName}Controller extends BaseController {
+@RequestMapping("/after/${lcfClassName}")
+public class ${className}Controller extends BaseController {
 
     @Resource
-	private I${clzName}Service ${clzNameLC}Service;
+	private I${className}Service ${lcfClassName}Service;
 	
     /** 
      *${moduleNameCN}分页列表数据
@@ -38,8 +38,8 @@ public class ${clzName}Controller extends BaseController {
 	public String list(Model model, PageEntity page){
 		page.setWhereParameters(getParams());
 		model.addAttribute("page", page);
-		model.addAttribute("list", ${clzNameLC}Service.findList(page.getWhereParameters()));
-		return "after/${clzNameLC}/list";
+		model.addAttribute("list", ${lcfClassName}Service.findList(page.getWhereParameters()));
+		return "after/${lcfClassName}/list";
 	}
 	
    /** 
@@ -48,9 +48,9 @@ public class ${clzName}Controller extends BaseController {
 	 * @Description: 获取${moduleNameCN}列表数据
 	 */
 	@RequestMapping("/loadlist")
-	public String loadList(Model model,${clzName} ${clzNameLC}){
-		model.addAttribute("list", ${clzNameLC}Service.queryList(${clzNameLC}));
-		return "after/${clzNameLC}/loadlist";
+	public String loadList(Model model,${className} ${lcfClassName}){
+		model.addAttribute("list", ${lcfClassName}Service.queryList(${lcfClassName}));
+		return "after/${lcfClassName}/loadlist";
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class ${clzName}Controller extends BaseController {
 	@RequestMapping("/add")
 	public String add(Model model) {
 	    model.addAllAttributes(getParams());
-		return "after/${clzNameLC}/edit";
+		return "after/${lcfClassName}/edit";
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class ${clzName}Controller extends BaseController {
 	 * @Description:
 	 */
 	@RequestMapping("/edit/{id}")
-	public String edit(Model model, @PathVariable(value="id") String ${parserKey}) {
-		model.addAttribute("obj", ${clzNameLC}Service.findObjectById(${parserKey}));
-		return "after/${clzNameLC}/edit";
+	public String edit(Model model, @PathVariable(value="id") String ${beanPK}) {
+		model.addAttribute("obj", ${lcfClassName}Service.findObjectById(${beanPK}));
+		return "after/${lcfClassName}/edit";
 	}
 
 	/**
@@ -82,32 +82,32 @@ public class ${clzName}Controller extends BaseController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public JsonEntity saveOrUpdate(${clzName} ${clzNameLC}) {
+	public JsonEntity saveOrUpdate(${className} ${lcfClassName}) {
 		JsonEntity js = new JsonEntity();
-		if (!ValidateEntity(${clzNameLC}, js)) {
+		if (!ValidateEntity(${lcfClassName}, js)) {
 			return js;
 		}
-		if (StringUtils.isEmpty(${clzNameLC}.get${capitalizeKey}())) {
-		    ${clzNameLC}.set${capitalizeKey}(UtilsUUID.getUUID());
-			js.setCode(${clzNameLC}Service.insert(${clzNameLC}));
+		if (StringUtils.isEmpty(${lcfClassName}.get${capitalizeKey}())) {
+		    ${lcfClassName}.set${capitalizeKey}(UtilsUUID.getUUID());
+			js.setCode(${lcfClassName}Service.insert(${lcfClassName}));
 		} else {
-			js.setCode(${clzNameLC}Service.update(${clzNameLC}));
+			js.setCode(${lcfClassName}Service.update(${lcfClassName}));
 		}
 		return js;
 	}
 
 	/**
 	 * 删除${moduleNameCN}
-	 * @Title: delete${clzName}
+	 * @Title: delete${className}
 	 * @Description:
 	 */
 	@RequestMapping("/del")
 	@ResponseBody
-	public JsonEntity delete(String ${parserKey}) {
-		if (StringUtils.isEmpty(${parserKey})) {
+	public JsonEntity delete(String ${beanPK}) {
+		if (StringUtils.isEmpty(${beanPK})) {
 			throw new RuntimeException("参数不能为空");
 		}
-		return new JsonEntity(${clzNameLC}Service.delete(${parserKey}.split("[`]")));
+		return new JsonEntity(${lcfClassName}Service.delete(${beanPK}.split("[`]")));
 	}
 	
 	/**
@@ -118,12 +118,12 @@ public class ${clzName}Controller extends BaseController {
 	 */
 	@RequestMapping("/validate")
 	@ResponseBody
-    public JsonEntity validate(${clzName} ${clzNameLC},String fieldId,String fieldValue, String old_field,HttpServletRequest request,HttpServletResponse response){
+    public JsonEntity validate(${className} ${lcfClassName},String fieldId,String fieldValue, String old_field,HttpServletRequest request,HttpServletResponse response){
 		JsonEntity je= new JsonEntity();
 		je.setData(fieldId);
 	if (StringUtils.isEmpty(old_field) || !old_field.equals(fieldValue)){
-		ReflectionUtils.setFieldValue(${clzNameLC}, fieldId, fieldValue);
-		int ct=${clzNameLC}Service.validate(${clzNameLC});
+		ReflectionUtils.setFieldValue(${lcfClassName}, fieldId, fieldValue);
+		int ct=${lcfClassName}Service.validate(${lcfClassName});
 		if(ct!=0){
 			je.setStatus(JsonEntity.fail);
 		}

@@ -12,48 +12,48 @@ import java.util.Map;
 
 /**
  * @Description:${moduleNameCN}业务层实现类
- * @ClassName:  ${clzName}ServiceImpl
+ * @ClassName:  ${className}ServiceImpl
  * @author: sunshine  
  */
- @Service("${clzNameLC}Service")
-public class ${clzName}ServiceImpl extends AbstractServiceImpl<${clzName}> implements I${clzName}Service {
+ @Service("${lcfClassName}Service")
+public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> implements I${className}Service {
     
     @Resource
-	private ${clzName}Dao ${clzNameLC}Dao;
+	private ${className}Dao ${lcfClassName}Dao;
 	
 	@Override
-	public BaseDAO<${clzName}> dao() {
-		return ${clzNameLC}Dao;
+	public BaseDAO<${className}> dao() {
+		return ${lcfClassName}Dao;
 	}
 	
     @Override
-	public void setId(${clzName} t, String id) {
+	public void setId(${className} t, String id) {
          t.set${capitalizeKey}(id);
 	}
 	
 	@Override
-	public Integer insert(${clzName} ${clzNameLC}) {
-		return super.insert(${clzNameLC});
+	public Integer insert(${className} ${lcfClassName}) {
+		return super.insert(${lcfClassName});
 	}
 
 	@Override
-	public Integer update(${clzName} ${clzNameLC}) {
-		return super.update(${clzNameLC});
+	public Integer update(${className} ${lcfClassName}) {
+		return super.update(${lcfClassName});
 	}
 
 	@Override
-	public ${clzName} findObjectById(String id) {
+	public ${className} findObjectById(String id) {
 		return super.findObjectById(id);
 	}
 
 	@Override
-	public List<${clzName}> findList(Map<String, Object> map) {
+	public List<${className}> findList(Map<String, Object> map) {
 		return super.findList(map);
 	}
 
 	@Override
-	public List<${clzName}> queryList(${clzName} ${clzNameLC}) {
-		return super.queryList(${clzNameLC});
+	public List<${className}> queryList(${className} ${lcfClassName}) {
+		return super.queryList(${lcfClassName});
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class ${clzName}ServiceImpl extends AbstractServiceImpl<${clzName}> imple
 	}
 
 	@Override
-	public Integer validate(${clzName} ${clzNameLC}) {
-		return super.validate(${clzNameLC});
+	public Integer validate(${className} ${lcfClassName}) {
+		return super.validate(${lcfClassName});
 	}
 }

@@ -30,7 +30,7 @@ public class ScaffoldGen {
 	private Connection conn;//连接
 	private String schema;
 	private DatabaseMetaData metaData;//源数据
-	private final String clzName;//类名
+	private final String className;//类名
 	private final String tblName;//表名
 	private final String moduleName;//模块名
 	private final String moduleNameCN;//模块名
@@ -52,27 +52,27 @@ public class ScaffoldGen {
      * @Title:  ScaffoldGen   
      * @Description:    TODO
      * @param:  @param pkgName 包名
-     * @param:  @param clzName 类名
+     * @param:  @param className 类名
      * @param:  @param tblName 表名
      * @throws
      */
-	public ScaffoldGen(String clzName, String tblName,String moduleNameCN) {
-		this(clzName,clzName,tblName,moduleNameCN);
+	public ScaffoldGen(String className, String tblName,String moduleNameCN) {
+		this(className,className,tblName,moduleNameCN);
 	}
 	/**
 	 * 
 	 * @Title:  ScaffoldGen   
 	 * @Description:    TODO
 	 * @param:  @param moduleName 模块名
-	 * @param:  @param clzName 类名
+	 * @param:  @param className 类名
 	 * @param:  @param tblName 表名
 	 * @param:  @param moduleNameCN  模块说明
 	 * @throws
 	 */
-	public ScaffoldGen(String moduleName,String clzName, String tblName,String moduleNameCN) {
+	public ScaffoldGen(String moduleName,String className, String tblName,String moduleNameCN) {
 		this.moduleName=moduleName;
 		this.moduleNameCN=moduleNameCN;
-		this.clzName = StringUtils.capitalize(clzName);//首字母大写
+		this.className = StringUtils.capitalize(className);//首字母大写
 		this.tblName = tblName.toLowerCase();//转换成全小写
 	}
 	
@@ -85,7 +85,7 @@ public class ScaffoldGen {
 		if (tableInfo == null) {
 			return;
 		}
-		ScaffoldBuilder sf = new ScaffoldBuilder(this.moduleName,this.clzName, tableInfo,this.moduleNameCN);
+		ScaffoldBuilder sf = new ScaffoldBuilder(this.moduleName,this.className, tableInfo,this.moduleNameCN);
 		List<FileGenerator> list = sf.buildGenerators();
 		for (FileGenerator gen : list) {
 			 gen.execute();
@@ -223,5 +223,4 @@ public class ScaffoldGen {
 		log.trace("恭喜,解析完毕!");
 		return tableInfo;
 	}
-
 }

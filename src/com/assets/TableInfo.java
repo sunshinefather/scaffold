@@ -13,13 +13,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public class TableInfo {
 	private final String ENDL = "\n";
-	private final String TAB = "\t";
-	private final String TAB2 = TAB + TAB;
-	private final String TAB3 = TAB2 + TAB;
+	private final String TAB1 = "\t";
+	private final String TAB2 = TAB1 + TAB1;
+	private final String TAB3 = TAB2 + TAB1;
 	private final String TAB4 = TAB2 + TAB2;
 	private String name;
-	private String primaryKey;//主键
-	private String parserKey;//转换后的主键(小写)
+	private String tablePK;//主键
+	private String beanPK;//转换后的主键(小写)
 	private List<ColumnInfo> columns;//table字段集
 	private List<PropertyInfo> fields;//bean属性集
 
@@ -36,11 +36,11 @@ public class TableInfo {
 	}
 
 	public String getPrimaryKey() {
-		return primaryKey;
+		return tablePK;
 	}
 
-	public void setPrimaryKey(String primaryKey) {
-		this.primaryKey = primaryKey;
+	public void setPrimaryKey(String tablePK) {
+		this.tablePK = tablePK;
 	}
 
 	public List<ColumnInfo> getColumns() {
@@ -52,11 +52,11 @@ public class TableInfo {
 	}
 
 	public String getParserKey() {
-		return parserKey;
+		return beanPK;
 	}
 
-	public void setParserKey(String parserKey) {
-		this.parserKey = parserKey;
+	public void setParserKey(String beanPK) {
+		this.beanPK = beanPK;
 	}
 
 	public void addColumn(ColumnInfo column) {
@@ -100,27 +100,53 @@ public class TableInfo {
 			String name=field.getName();
 			String type=field.getType();
 			if(field.getRemarks()!=null && !"".equals(field.getRemarks().trim())){
-				sb.append(TAB+"/**"+field.getRemarks()+"*/"+ENDL);
+				sb.append(TAB1+"/**"+field.getRemarks()+"*/"+ENDL);
 			}
-			sb.append(TAB+"private "+type+" "+name+";"+ENDL);
+			sb.append(TAB1+"private "+type+" "+name+";"+ENDL);
 			//set()
-			sb1.append(TAB+"public void set" + StringUtils.capitalize(name)+ 
+			sb1.append(TAB1+"public void set" + StringUtils.capitalize(name)+ 
 					"( " + type + " " + name + " ) {"+ENDL);
-			        sb1.append(TAB);
-			        sb1.append(TAB);
+			        sb1.append(TAB1);
+			        sb1.append(TAB1);
 					sb1.append("this." + name + " = " + name + ";"+ENDL);
-					sb1.append(TAB);
+					sb1.append(TAB1);
 					sb1.append( "}"+ENDL);
 			//get()
-			sb1.append(TAB+"public " + type + " get" +StringUtils.capitalize(name)+ "(){"+ENDL);
-					        sb1.append(TAB);
-					        sb1.append(TAB);
+			sb1.append(TAB1+"public " + type + " get" +StringUtils.capitalize(name)+ "(){"+ENDL);
+					        sb1.append(TAB1);
+					        sb1.append(TAB1);
 							sb1.append( "return " + name + ";"+ENDL);
-					        sb1.append(TAB);
+					        sb1.append(TAB1);
 							sb1.append( "}"+ENDL);	
 		}
 		return sb.toString()+sb1.toString();
 	}
+	/**
+	 * 生成bean需要导入的包
+	 * @Title: getModelImports
+	 * @Description:
+	 * @param: @return      
+	 * @return: String
+	 * @author: sunshine  
+	 * @throws
+	 */
+	public String getModelImports() {
+		StringBuffer sb = new StringBuffer();
+		boolean dateIsWrited=false;
+		boolean bigDecimalIsWrited=false;
+		for (PropertyInfo field : fields) {
+			String type=field.getType();
+            if("Date".equals(type) && !dateIsWrited){
+            	sb.append("import java.util.Date;"+ENDL);
+            	dateIsWrited=true;
+            }else if("BigDecimal".equals(type) && !bigDecimalIsWrited){
+            	sb.append("import java.math.BigDecimal;"+ENDL);
+            	bigDecimalIsWrited=true;
+            }
+		}
+		return sb.toString();
+	}
+	
     /**
      * 生成查询
      * @Description: TODO
@@ -133,9 +159,8 @@ public class TableInfo {
      */
 	public String getSelectStatement() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select ");
-		sb.append(this.getColumnNames());
-		sb.append(" from " + name);
+		sb.append("select <include refid=\"columns\"/> from ");
+		sb.append(name);
 		return sb.toString();
 	}
     /**
@@ -151,7 +176,7 @@ public class TableInfo {
 		StringBuffer sb = new StringBuffer();
 		ColumnInfo col = null;
 		sb.append("insert into " + name);
-		sb.append("( " + this.getColumnNames() + " ) values (");
+		sb.append("(<include refid=\"columns\"/>) values (");
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			if(col.getType().toUpperCase().equals("DATE")){
@@ -182,7 +207,7 @@ public class TableInfo {
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
-			if(!col.getName().toLowerCase().equals(primaryKey.toLowerCase())){
+			if(!col.getName().toLowerCase().equals(tablePK.toLowerCase())){
 				if("String".equals(col.parseJavaType())){
 					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !=\"\" ' >"+ENDL);
 				}else{
@@ -194,7 +219,7 @@ public class TableInfo {
 	
 		}
 		sb.append(TAB2+"</set>" +ENDL);
-		sb.append(TAB+" where " + primaryKey + "=#{"+parserKey+"}");
+		sb.append(TAB1+" where " + tablePK + "=#{"+beanPK+"}");
 		return sb.toString();
 	}
     /**
@@ -209,10 +234,10 @@ public class TableInfo {
 	public String getResultMap() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(TAB3);
-		sb.append("<id property=\"" + this.parserKey+ "\" column=\"" + this.primaryKey+"\" />");
+		sb.append("<id property=\"" + this.beanPK+ "\" column=\"" + this.tablePK+"\" />");
 		sb.append(ENDL);
 		for (ColumnInfo col : columns) {
-			if(!col.getName().equals(this.primaryKey)){
+			if(!col.getName().equals(this.tablePK)){
 				sb.append(TAB3);
 				sb.append("<result property=\"" + col.parseFieldName() + "\" column=\"" + col.getName()+"\" />");
 		                   //+ "\" jdbcType=\"" + col.parseJdbcType() + "\" />");

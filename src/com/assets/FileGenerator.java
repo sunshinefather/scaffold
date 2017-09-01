@@ -22,19 +22,19 @@ public class FileGenerator {
 	private final static String TEMPLATE_PATH = "com/assets/template/";//模板路径地址
 	private final static String SRC_PATH = "src" + StringUtil.FILE_SEPARATOR;
 	protected String pkgPath;
-	protected String clzName;
+	protected String className;
 	protected String template;//模板文件名称
 	protected String suffix;//生成文件后缀
 	private final Map<String, String> mapping;//替换模板标签键
 
-	public FileGenerator(String pkgPath, String clzName, String template, Map<String, String> mapping) {
-		this(pkgPath, clzName, template, mapping, "java");
+	public FileGenerator(String pkgPath, String className, String template, Map<String, String> mapping) {
+		this(pkgPath, className, template, mapping, "java");
 	}
 
-	public FileGenerator(String pkgPath, String clzName, String template, Map<String, String> mapping,
+	public FileGenerator(String pkgPath, String className, String template, Map<String, String> mapping,
 			String fileSuffix) {
 		this.pkgPath = pkgPath;
-		this.clzName = clzName;
+		this.className = className;
 		this.template = template;
 		this.mapping = mapping;
 		this.suffix = fileSuffix;
@@ -43,7 +43,7 @@ public class FileGenerator {
 	public String getTargetFilePath() {
 		String result = pkgPath.replace(StringUtil.DOT, StringUtil.FILE_SEPARATOR);
 		result = result + StringUtil.FILE_SEPARATOR;
-		result = result + clzName + StringUtil.DOT + suffix;
+		result = result + className + StringUtil.DOT + suffix;
 		result = SRC_PATH + result;
 		return result;
 	}

@@ -1,7 +1,6 @@
 package com.assets;
 
 import org.apache.commons.lang.StringUtils;
-
 import com.assets.wordsparser.UnderlineSplitWordsParser;
 import com.assets.wordsparser.WordsParser;
 /**
@@ -15,7 +14,7 @@ public class ColumnInfo {
 	private String name;//字段
 	private String type;//字段类型
 	private int size;//字段长度
-	private int digits;//十进制位
+	private int digits;//小数位数
 	private boolean nullable;//可空
 	private final WordsParser wordsParser=new UnderlineSplitWordsParser();
 	private String remarks;//字段注释
@@ -78,19 +77,23 @@ public class ColumnInfo {
 	}
 
 	public String parseJavaType() {
-		String jdbcType = StringUtils.upperCase(getType());
+		String jdbcType = StringUtils.lowerCase(getType());
 		String result = "String";
-		if (getDigits() > 0) {		
+		if (getDigits() > 0 || "decimal".equals(jdbcType)) {		
 			result = "BigDecimal";
-		}
-		return result;
-	}
-
-	public String parseJdbcType() {
-		String javaType = parseJavaType();
-		String result = "VARCHAR";
-		if ("BigDecimal".equals(javaType)) {
-			result = "NUMERIC";
+		}else if("int".equals(jdbcType) 
+				|| "bigint".equals(jdbcType)
+				|| "smallint".equals(jdbcType)
+				|| "integer".equals(jdbcType)
+				|| "mediumint".equals(jdbcType)
+				){
+			result = "Integer";
+		}else if("bigint".equals(jdbcType)){
+			result = "Long";
+		}else if(jdbcType.contains("time") || jdbcType.contains("date")){
+			result = "Date";
+		}else if("bit".equals(jdbcType)){
+			result = "Boolean";
 		}
 		return result;
 	}

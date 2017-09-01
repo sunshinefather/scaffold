@@ -5,10 +5,10 @@ import ${beanPath};
 
 /**
  * ${moduleNameCN}Dao
- * @ClassName:  ${clzName}Dao   
+ * @ClassName:  ${className}Dao   
  * @Description:   
  * @author: ${author} 
  */
-public interface ${clzName}Dao extends BaseDAO<${clzName}> {
+public interface ${className}Dao extends BaseDAO<${className}> {
 
 }
