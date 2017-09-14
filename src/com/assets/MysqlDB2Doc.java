@@ -30,7 +30,7 @@ public class MysqlDB2Doc {
             e.printStackTrace();
         }  
     }
-    private static String schema = "nc"; //目标数据库 名  
+    private static String schema = "test_sns"; //目标数据库 名  
     private static String url = "jdbc:mysql://192.168.1.240:3306/"+schema;//链接url  
     private static String username = "root"; //用户名  
     private static String password = "1qa2ws3ed"; //密码  
@@ -60,6 +60,7 @@ public class MysqlDB2Doc {
             System.out.println("...done");
             i++;
         }  
+        System.out.print("...处理完成,打开"+"c:/"+schema+".doc 查看");
         document.close();  
         conn.close();
     }  
@@ -102,22 +103,23 @@ public class MysqlDB2Doc {
         Cell cell5 = new Cell("键");// 单元格  
         cell5.setHeader(true); 
           
-        Cell cell6 = new Cell("说明");// 单元格  
+        Cell cell6 = new Cell("备注");// 单元格  
         cell6.setHeader(true);
         //设置表头格式  
+        Color bkc = new Color(153, 204, 255);
         table.setWidths(new float[]{8f,30f,15f,8f,10f,29f});
         cell1.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell1.setBackgroundColor(Color.gray);
+        cell1.setBackgroundColor(bkc);
         cell2.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell2.setBackgroundColor(Color.gray);
+        cell2.setBackgroundColor(bkc);
         cell3.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell3.setBackgroundColor(Color.gray);
+        cell3.setBackgroundColor(bkc);
         cell4.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell4.setBackgroundColor(Color.gray);
+        cell4.setBackgroundColor(bkc);
         cell5.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell5.setBackgroundColor(Color.gray);
+        cell5.setBackgroundColor(bkc);
         cell6.setHorizontalAlignment(Cell.ALIGN_CENTER);
-        cell6.setBackgroundColor(Color.gray);
+        cell6.setBackgroundColor(bkc);
         table.addCell(cell1);  
         table.addCell(cell2);  
         table.addCell(cell3);  
@@ -161,12 +163,12 @@ public class MysqlDB2Doc {
      * @throws Exception 
      */  
     public static void addTableMetaData(Document dcument,String [] arr,int i) throws Exception{  
-        Paragraph ph = new Paragraph(i+". 表名: "+arr[0]+"        说明: "+(arr[1]==null?"":arr[1]));
+        Paragraph ph = new Paragraph(i+". 表名: "+arr[0]+"	    描述: "+(arr[1]==null?"":arr[1]));
         ph.setAlignment(Paragraph.ALIGN_LEFT); 
         dcument.add(ph);
     }  
     /** 
-     * 把SQL语句查询出列表 
+     * 根据SQL语句查询出列表 
      * @param sql 
      * @param conn 
      * @return 
