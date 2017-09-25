@@ -15,30 +15,30 @@ import java.util.Map;
  * @ClassName:  ${className}ServiceImpl
  * @author: sunshine  
  */
- @Service("${lcfClassName}Service")
+ @Service("${lflClassName}Service")
 public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> implements I${className}Service {
     
     @Resource
-	private ${className}Dao ${lcfClassName}Dao;
+	private ${className}Dao ${lflClassName}Dao;
 	
 	@Override
 	public BaseDAO<${className}> dao() {
-		return ${lcfClassName}Dao;
+		return ${lflClassName}Dao;
 	}
 	
     @Override
 	public void setId(${className} t, String id) {
-         t.set${capitalizeKey}(id);
+         t.set${uflBeanPK}(id);
 	}
 	
 	@Override
-	public Integer insert(${className} ${lcfClassName}) {
-		return super.insert(${lcfClassName});
+	public Integer insert(${className} ${lflClassName}) {
+		return super.insert(${lflClassName});
 	}
 
 	@Override
-	public Integer update(${className} ${lcfClassName}) {
-		return super.update(${lcfClassName});
+	public Integer update(${className} ${lflClassName}) {
+		return super.update(${lflClassName});
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> i
 	}
 
 	@Override
-	public List<${className}> queryList(${className} ${lcfClassName}) {
-		return super.queryList(${lcfClassName});
+	public List<${className}> queryList(${className} ${lflClassName}) {
+		return super.queryList(${lflClassName});
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> i
 	}
 
 	@Override
-	public Integer validate(${className} ${lcfClassName}) {
-		return super.validate(${lcfClassName});
+	public Integer validate(${className} ${lflClassName}) {
+		return super.validate(${lflClassName});
 	}
 }

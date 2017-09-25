@@ -23,11 +23,11 @@ import ${servicePath};
  * @author: ${author}
  */
 @Controller
-@RequestMapping("/after/${lcfClassName}")
+@RequestMapping("/after/${lflClassName}")
 public class ${className}Controller extends BaseController {
 
     @Resource
-	private I${className}Service ${lcfClassName}Service;
+	private I${className}Service ${lflClassName}Service;
 	
     /** 
      *${moduleNameCN}分页列表数据
@@ -38,8 +38,8 @@ public class ${className}Controller extends BaseController {
 	public String list(Model model, PageEntity page){
 		page.setWhereParameters(getParams());
 		model.addAttribute("page", page);
-		model.addAttribute("list", ${lcfClassName}Service.findList(page.getWhereParameters()));
-		return "after/${lcfClassName}/list";
+		model.addAttribute("list", ${lflClassName}Service.findList(page.getWhereParameters()));
+		return "after/${lflClassName}/list";
 	}
 	
    /** 
@@ -48,9 +48,9 @@ public class ${className}Controller extends BaseController {
 	 * @Description: 获取${moduleNameCN}列表数据
 	 */
 	@RequestMapping("/loadlist")
-	public String loadList(Model model,${className} ${lcfClassName}){
-		model.addAttribute("list", ${lcfClassName}Service.queryList(${lcfClassName}));
-		return "after/${lcfClassName}/loadlist";
+	public String loadList(Model model,${className} ${lflClassName}){
+		model.addAttribute("list", ${lflClassName}Service.queryList(${lflClassName}));
+		return "after/${lflClassName}/loadlist";
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class ${className}Controller extends BaseController {
 	@RequestMapping("/add")
 	public String add(Model model) {
 	    model.addAllAttributes(getParams());
-		return "after/${lcfClassName}/edit";
+		return "after/${lflClassName}/edit";
 	}
 
 	/**
@@ -71,8 +71,8 @@ public class ${className}Controller extends BaseController {
 	 */
 	@RequestMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable(value="id") String ${beanPK}) {
-		model.addAttribute("obj", ${lcfClassName}Service.findObjectById(${beanPK}));
-		return "after/${lcfClassName}/edit";
+		model.addAttribute("obj", ${lflClassName}Service.findObjectById(${beanPK}));
+		return "after/${lflClassName}/edit";
 	}
 
 	/**
@@ -82,16 +82,16 @@ public class ${className}Controller extends BaseController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public JsonEntity saveOrUpdate(${className} ${lcfClassName}) {
+	public JsonEntity saveOrUpdate(${className} ${lflClassName}) {
 		JsonEntity js = new JsonEntity();
-		if (!ValidateEntity(${lcfClassName}, js)) {
+		if (!ValidateEntity(${lflClassName}, js)) {
 			return js;
 		}
-		if (StringUtils.isEmpty(${lcfClassName}.get${capitalizeKey}())) {
-		    ${lcfClassName}.set${capitalizeKey}(UtilsUUID.getUUID());
-			js.setCode(${lcfClassName}Service.insert(${lcfClassName}));
+		if (StringUtils.isEmpty(${lflClassName}.get${uflBeanPK}())) {
+		    ${lflClassName}.set${uflBeanPK}(UtilsUUID.getUUID());
+			js.setCode(${lflClassName}Service.insert(${lflClassName}));
 		} else {
-			js.setCode(${lcfClassName}Service.update(${lcfClassName}));
+			js.setCode(${lflClassName}Service.update(${lflClassName}));
 		}
 		return js;
 	}
@@ -107,7 +107,7 @@ public class ${className}Controller extends BaseController {
 		if (StringUtils.isEmpty(${beanPK})) {
 			throw new RuntimeException("参数不能为空");
 		}
-		return new JsonEntity(${lcfClassName}Service.delete(${beanPK}.split("[`]")));
+		return new JsonEntity(${lflClassName}Service.delete(${beanPK}.split("[`]")));
 	}
 	
 	/**
@@ -118,12 +118,12 @@ public class ${className}Controller extends BaseController {
 	 */
 	@RequestMapping("/validate")
 	@ResponseBody
-    public JsonEntity validate(${className} ${lcfClassName},String fieldId,String fieldValue, String old_field,HttpServletRequest request,HttpServletResponse response){
+    public JsonEntity validate(${className} ${lflClassName},String fieldId,String fieldValue, String old_field,HttpServletRequest request,HttpServletResponse response){
 		JsonEntity je= new JsonEntity();
 		je.setData(fieldId);
 	if (StringUtils.isEmpty(old_field) || !old_field.equals(fieldValue)){
-		ReflectionUtils.setFieldValue(${lcfClassName}, fieldId, fieldValue);
-		int ct=${lcfClassName}Service.validate(${lcfClassName});
+		ReflectionUtils.setFieldValue(${lflClassName}, fieldId, fieldValue);
+		int ct=${lflClassName}Service.validate(${lflClassName});
 		if(ct!=0){
 			je.setStatus(JsonEntity.fail);
 		}

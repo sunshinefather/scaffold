@@ -40,7 +40,7 @@ public class ScaffoldBuilder {
 		this.tableInfo = tableInfo;
 		mapping = new HashMap<String, String>();
 		mapping.put("className",tableInfo.getClassName());//bean名称
-		mapping.put("lcfClassName", StringUtils.uncapitalize(tableInfo.getClassName()));//首字母小写的bean名称
+		mapping.put("lflClassName", StringUtils.uncapitalize(tableInfo.getClassName()));//首字母小写的bean名称
 		mapping.put("tblName", tableInfo.getName());//表名
 		mapping.put("moduleNameCN", moduleNameCN);//模块中文名称(表备注)
 		mapping.put("beanPath", getBeanPath());//bean生成的路径,
@@ -56,7 +56,7 @@ public class ScaffoldBuilder {
 		DevLog.debug(tableInfo.getParserKey());
 		mapping.put("beanPK", tableInfo.getParserKey());//转换后的bean对应的主键
 		
-		mapping.put("ucfBeanPK",StringUtils.capitalize(tableInfo.getParserKey()));//首字母大写的bean对应的主键
+		mapping.put("uflBeanPK",StringUtils.capitalize(tableInfo.getParserKey()));//首字母大写的bean对应的主键
 		
 		DevLog.debug(tableInfo.getFindByLike());
 		mapping.put("findByLike", tableInfo.getFindByLike());//按条件查找语句
