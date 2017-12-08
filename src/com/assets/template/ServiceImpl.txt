@@ -9,13 +9,15 @@ import com.mdks.common.base.AbstractServiceImpl;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Description:${moduleNameCN}业务层实现类
  * @ClassName:  ${className}ServiceImpl
  * @author: sunshine  
  */
- @Service("${lflClassName}Service")
+@Service("${lflClassName}Service")
+@Transactional
 public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> implements I${className}Service {
     
     @Resource

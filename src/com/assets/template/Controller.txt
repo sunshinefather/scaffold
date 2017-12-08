@@ -37,8 +37,9 @@ public class ${className}Controller extends BaseController {
 	@RequestMapping("/list")
 	public String list(Model model, PageEntity page){
 		page.setWhereParameters(getParams());
+		page.setList(${lflClassName}Service.findList(page.getWhereParameters()));
+		model.addAttribute("list",page.getList());
 		model.addAttribute("page", page);
-		model.addAttribute("list", ${lflClassName}Service.findList(page.getWhereParameters()));
 		return "after/${lflClassName}/list";
 	}
 	
