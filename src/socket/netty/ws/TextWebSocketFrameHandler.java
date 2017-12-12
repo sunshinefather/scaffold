@@ -16,6 +16,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		Channel incoming = ctx.channel();
 		System.out.println("系统消息:《"+incoming.remoteAddress()+"》:异常断开\r\n");
+		cause.printStackTrace();
 		ctx.close();
 	}
 
@@ -25,7 +26,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		Channel incoming = ctx.channel();
 		for(Channel channel:channels){
 			if(channel!=incoming){
-				channel.writeAndFlush(new TextWebSocketFrame("用户《" + incoming.remoteAddress() + "》说:" + msg.text()+"\r\n"));
+				channel.writeAndFlush(new TextWebSocketFrame(channels.size()+"用户《" + incoming.remoteAddress() + "》说:" + msg.text()+"\r\n"));
 			}else{
 				channel.writeAndFlush(new TextWebSocketFrame("我:" + msg.text()+"\r\n"));
 			}
@@ -37,7 +38,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		Channel incoming = ctx.channel();
 		for(Channel channel:channels){
-			channel.writeAndFlush("系统消息:《"+incoming.remoteAddress()+"》 加入房间\r\n");
+			channel.writeAndFlush(new TextWebSocketFrame("系统消息:《"+incoming.remoteAddress()+"》 加入房间\r\n"));
 		}
 		channels.add(incoming);
 	}
@@ -47,7 +48,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		Channel incoming = ctx.channel();
 		for(Channel channel:channels){
-			channel.writeAndFlush("系统消息:《"+incoming.remoteAddress()+"》 退出房间\r\n");
+			channel.writeAndFlush(new TextWebSocketFrame("系统消息:《"+incoming.remoteAddress()+"》 退出房间\r\n"));
 		}
 		channels.remove(incoming);
 	}
@@ -57,9 +58,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		Channel incoming = ctx.channel();
 		for(Channel channel:channels){
 			if(channel!=incoming){
-				channel.writeAndFlush("系统消息:《"+incoming.remoteAddress()+"》 上线了\r\n");
+				channel.writeAndFlush(new TextWebSocketFrame("系统消息:《"+incoming.remoteAddress()+"》 上线了\r\n"));
 			}else{
-				channel.writeAndFlush("我上线了\r\n");
+				channel.writeAndFlush(new TextWebSocketFrame("我上线了\r\n"));
 			}
 		}
 	}
@@ -69,9 +70,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		Channel incoming = ctx.channel();
 		for(Channel channel:channels){
 			if(channel!=incoming){
-				channel.writeAndFlush("系统消息:《"+incoming.remoteAddress()+"》 掉线了\r\n");
+				channel.writeAndFlush(new TextWebSocketFrame("系统消息:《"+incoming.remoteAddress()+"》 掉线了\r\n"));
 			}else{
-				channel.writeAndFlush("我掉线了\r\n");
+				channel.writeAndFlush(new TextWebSocketFrame("我掉线了\r\n"));
 			}
 		}
 	}

@@ -1,9 +1,11 @@
 package socket.netty;
 
+import java.nio.charset.Charset;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.CombinedChannelDuplexHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -12,7 +14,6 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import java.nio.charset.Charset;
 
 public class Server {
 	
@@ -28,10 +29,9 @@ public class Server {
 			 .childHandler(new ChannelInitializer<SocketChannel>(){
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast("framer",new DelimiterBasedFrameDecoder(8192,Delimiters.lineDelimiter()));
-					ch.pipeline().addLast("decoder",new StringDecoder(Charset.forName("GBK")));
-					ch.pipeline().addLast("encoder",new StringEncoder(Charset.forName("GBK")));
-					ch.pipeline().addLast("handler",new ServerHandler());
+					ch.pipeline().addLast(new DelimiterBasedFrameDecoder(8192,Delimiters.lineDelimiter()));
+					ch.pipeline().addLast(new CombinedChannelDuplexHandler<StringDecoder, StringEncoder>(new StringDecoder(Charset.forName("GBK")),new StringEncoder(Charset.forName("GBK"))));
+					ch.pipeline().addLast(new ServerHandler());
 				}
 				 
 			 });

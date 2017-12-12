@@ -1,6 +1,5 @@
 package socket.netty.ws;
 
-
 public class StartServer {
 public static void main(String[] args) {
 	int port =8080;

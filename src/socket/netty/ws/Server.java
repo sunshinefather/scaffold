@@ -23,11 +23,9 @@ public class Server {
 			b.group(bossGroup, wokerGroup)
 			 .channel(NioServerSocketChannel.class)
 			 .option(ChannelOption.SO_BACKLOG,128)
-			 .childOption(ChannelOption.SO_KEEPALIVE,true)
 			 .childHandler(new ChannelInitializer<SocketChannel>(){
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-
 					ch.pipeline().addLast(new HttpServerCodec());
 					ch.pipeline().addLast(new HttpObjectAggregator(64*1024));
 					ch.pipeline().addLast(new ChunkedWriteHandler());
@@ -36,7 +34,7 @@ public class Server {
 					ch.pipeline().addLast(new TextWebSocketFrameHandler());
 				}
 				 
-			 });
+			 }).childOption(ChannelOption.SO_KEEPALIVE,true);
 
 			ChannelFuture f = b.bind(port);
 			f.channel().closeFuture().sync();

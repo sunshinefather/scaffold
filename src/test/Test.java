@@ -1,5 +1,6 @@
 package test;
 
+import algo.QuickSort;
 
 public class Test {
 	public static byte[] int2ByteArray(int i) {   
@@ -38,6 +39,10 @@ public class Test {
 		    return value;  
 		}  
 	public static void main(String[] args) throws Exception {
-		
+		int[] a = {12,20,5,16,15,1,30,45,23,9};
+		QuickSort.quickSort(a);
+        for(int a1:a){
+        	System.out.println(a1);
+        }
     }
 }
