@@ -25,34 +25,32 @@ import java.net.URL;
 
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>{
     
-    private final String wsUri;
-    private static final File homePage;
+    private final String homePageUri;
+    private static final File homePageHtml;
     static {
     	try {
 	    	URL location = HttpRequestHandler.class.getClassLoader().getResource("WebsocketChatClient.html");
 	    	String path = location.toURI().toString();
 	    	path = !path.contains("file:") ? path : path.substring(5);
-	    	homePage = new File(path);
+	    	homePageHtml = new File(path);
     	} catch (Exception e) {
     	  throw new IllegalStateException("初始化错误...", e);
     	}
     	}
     
     
-	public HttpRequestHandler(String wsUri) {
-		this.wsUri = wsUri;
+	public HttpRequestHandler(String homePageUri) {
+		this.homePageUri = homePageUri;
 	}
 
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-	    if(wsUri.equalsIgnoreCase(request.uri())){
-	    	ctx.fireChannelRead(request.retain());
-	    }else if("/".equals(request.uri())){
+	    if(homePageUri.equals(request.uri())){
 	    	if(HttpUtil.is100ContinueExpected(request)){
 	    		send100Continue(ctx);
 	    	}
-	    	RandomAccessFile file = new RandomAccessFile(homePage, "r");
+	    	RandomAccessFile file = new RandomAccessFile(homePageHtml, "r");
 	    	HttpResponse response = new DefaultHttpResponse(request.protocolVersion(), HttpResponseStatus.OK);
 	    	response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
 	    	boolean keepAlive = HttpUtil.isKeepAlive(request);
@@ -84,7 +82,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		Channel incoming = ctx.channel();
 		System.out.println("系统消息:《"+incoming.remoteAddress()+"》:异常断开\r\n");
-		cause.printStackTrace();
 		ctx.close();
 	}
 }

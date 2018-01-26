@@ -29,7 +29,7 @@ public class Server {
 					ch.pipeline().addLast(new HttpServerCodec());
 					ch.pipeline().addLast(new HttpObjectAggregator(64*1024));
 					ch.pipeline().addLast(new ChunkedWriteHandler());
-					ch.pipeline().addLast(new HttpRequestHandler("/ws"));
+					ch.pipeline().addLast(new HttpRequestHandler("/"));
 					ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws"));
 					ch.pipeline().addLast(new TextWebSocketFrameHandler());
 				}
