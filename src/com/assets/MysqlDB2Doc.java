@@ -17,6 +17,13 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
+/**
+ * mysql数据库表导出为doc文档
+ * @ClassName:  MysqlDB2Doc   
+ * @Description:
+ * @author: sunshine  
+ * @date:   2018年2月2日 上午10:57:49
+ */
 public class MysqlDB2Doc {
 	   //键类型字典  
     private static Map<String,String> keyType = new HashMap<String,String>();
