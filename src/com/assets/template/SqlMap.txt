@@ -12,7 +12,7 @@ ${resultMap}
 		${insertSql}
 	</insert>
 	
-	<select id="findObjectById" parameterType="String" resultMap="baseResult">
+	<select id="findById" parameterType="String" resultMap="baseResult">
 		${selectSql} 
 		where
 		${tablePK}=#{id}
@@ -23,14 +23,7 @@ ${resultMap}
 			<where>
 ${findByLike}
 			</where> 
-        order by ${tablePK} desc
-	</select>
-	<select id="loadList" parameterType="${className}" resultMap="baseResult">
-	   	${selectSql}
-		<where>
-${findByLike}
-		</where> 
-        order by ${tablePK} desc
+        order by `create_datetime` desc
 	</select>
 	<update id="update" parameterType="${className}">
 ${updateSql}
@@ -42,9 +35,6 @@ ${updateSql}
 		      #{item}
 	   </foreach>
 	</delete>
-	<select id="maxid" resultType="int">
-	    select max(${tablePK}) id from ${tblName}
-	</select>
 	<select id="validate" parameterType="${className}" resultType="int">
       select count(1) as ct from ${tblName} 
         <where>

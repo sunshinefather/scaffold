@@ -10,8 +10,8 @@ import java.util.List;
  * @date:   2014年8月14日 上午10:15:40
  */
 public interface ITree {
-   Object getId();
-   Object getParentId();
+   String getId();
+   String getParentId();
    List<ITree> getChildren();
    void setChildren(List<ITree> children);
 }

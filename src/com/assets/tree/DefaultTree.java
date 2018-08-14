@@ -7,6 +7,10 @@ public abstract class DefaultTree implements ITree {
     private String nodeName;
     private String parentId;
     private List<ITree> children;
+    
+    public DefaultTree() {
+    	
+    }
 	public DefaultTree(String id, String nodeName, String parentId) {
 		super();
 		this.id = id;
@@ -23,12 +27,12 @@ public abstract class DefaultTree implements ITree {
 	}
 
 	@Override
-	public Object getId() {
+	public String getId() {
 		return id;
 	}
 
 	@Override
-	public Object getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 	
@@ -47,4 +51,10 @@ public abstract class DefaultTree implements ITree {
 	public void setChildren(List<ITree> children) {
 		this.children = children;
 	}
+
+	@Override
+	public String toString() {
+		return "{\"id\":\"" + id + "\",\"nodeName\":\"" + nodeName + "\",\"parentId\":\"" + parentId + "\",\"children\":"+children+"}";
+	}
+	
 }

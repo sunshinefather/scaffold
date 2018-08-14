@@ -142,7 +142,7 @@ public class ScaffoldGen {
               props.put("remarksReporting","true");//取得注释
               props.put("user", user);
               props.put("password", password);
-			conn = DriverManager.getConnection(url,props);
+			  conn = DriverManager.getConnection(url,props);
 			if (conn == null) {
 				log.fatal("数据库连接为空");
 				return false;

@@ -237,17 +237,17 @@ public class TableInfo {
 			col = columns.get(i);
 			if(!col.getName().toLowerCase().equals(tablePK.toLowerCase())){
 				if("String".equals(col.parseJavaType())){
-					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !=\"\" ' >"+ENDL);
+					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" != \"\" ' >"+ENDL);
 				}else{
 					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null '>"+ENDL);
 				}
-				sb.append(TAB4+col.getName() + "=#{" + col.parseFieldName() +"},"+ENDL);
+				sb.append(TAB4+col.getName() + " = #{" + col.parseFieldName() +"},"+ENDL);
 				sb.append(TAB3+"</if>"+ENDL);
 			}
 	
 		}
 		sb.append(TAB2+"</set>" +ENDL);
-		sb.append(TAB1+" where " + tablePK + "=#{"+beanPK+"}");
+		sb.append(TAB1+" where " + tablePK + " = #{"+beanPK+"}");
 		return sb.toString();
 	}
     /**
@@ -286,11 +286,18 @@ public class TableInfo {
 	public String getOtherCondition() {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
-			sb.append(TAB3);
-			sb.append("<if test='" + col.parseFieldName() + " != null and " + col.parseFieldName() + " != \"\" ' > ");
-			sb.append(" and "+ col.getName() +"=#{"+ col.parseFieldName()+"}");
-			sb.append("</if>");
-			sb.append(ENDL);
+			if(!("create_user_id".equalsIgnoreCase(col.getName())
+			   || "create_datetime".equalsIgnoreCase(col.getName())	
+			   || "modify_user_id".equalsIgnoreCase(col.getName())	
+			   || "modify_datetime".equalsIgnoreCase(col.getName())	
+			   || "delete_flag".equalsIgnoreCase(col.getName())	
+				)) {
+				sb.append(TAB3);
+				sb.append("<if test='" + col.parseFieldName() + " ! = null ' > ");
+				sb.append(" and `"+ col.getName() +"` = #{"+ col.parseFieldName() +"}");
+				sb.append("</if>");
+				sb.append(ENDL);	
+			}
 		}
 		return sb.toString();
 	}
@@ -308,16 +315,12 @@ public class TableInfo {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
 				sb.append(TAB3);
-				if("String".equals(col.parseJavaType())){
-					sb.append("<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" !=\"\" ' >"+ENDL);
-				}else{
-					sb.append("<if test='"+col.parseFieldName()+" !=null ' >"+ENDL);
-				}
+				sb.append("<if test='"+col.parseFieldName()+" != null ' >"+ENDL);
 				if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
 					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
 					sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+ col.parseFieldName()+"})>0 ]]>"+ENDL);
 				}else{
-					sb.append(TAB4+" and `"+ col.getName() +"`=#{"+ col.parseFieldName()+"}"+ENDL);
+					sb.append(TAB4+" and `"+ col.getName() +"` = #{"+ col.parseFieldName()+"}"+ENDL);
 				}
 				sb.append(TAB3+"</if>"+ENDL);
 		}

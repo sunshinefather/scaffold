@@ -1,14 +1,12 @@
 package ${pkgPath};
 
 import java.io.Serializable;
-import org.apache.ibatis.type.Alias;
 ${beanImports}
 /**
  * @Description:${moduleNameCN}bean
  * @ClassName:  ${className} 
  * @author: sunshine  
  */
-@Alias("${className}")
 public class ${className} implements Serializable {
 	private static final long serialVersionUID = 1L;
 ${propertysDeclareInfo}   

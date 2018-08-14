@@ -1,10 +1,10 @@
 package com.assets;
 
-import java.sql.SQLException;
+
 public class Main {
 
-	public static void main(String arg[]) throws SQLException {
-		ScaffoldGen sg = new ScaffoldGen("delivery","StemOption", "biz_stem_option","题项");
+	public static void main(String arg[]) throws Exception {
+		ScaffoldGen sg = new ScaffoldGen("visit","Visit", "biz_visit","随访");
 		sg.execute();
        }
 }

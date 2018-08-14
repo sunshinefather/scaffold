@@ -13,7 +13,7 @@ import com.assets.utils.StringUtil;
 public class ScaffoldBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	protected final static String PKG_PREFIX = "com.mdks.module.";
+	protected final static String PKG_PREFIX = "com.shsy.clinic.module.";
 	protected final static String PKG_SUFFIX_MODEL = "bean.";
 	protected final static String PKG_SUFFIX_DAO = "dao.";
 	protected final static String PKG_SUFFIX_SERVICE = "service.";

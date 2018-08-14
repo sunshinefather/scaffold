@@ -86,6 +86,7 @@ public class ColumnInfo {
 				|| "smallint".equals(jdbcType)
 				|| "integer".equals(jdbcType)
 				|| "mediumint".equals(jdbcType)
+				|| "tinyint".equals(jdbcType)
 				){
 			result = "Integer";
 		}else if("bigint".equals(jdbcType)){

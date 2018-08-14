@@ -19,13 +19,12 @@ import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
 /**
  * mysql数据库表导出为doc文档
- * @ClassName:  MysqlDB2Doc   
- * @Description:
- * @author: sunshine  
- * @date:   2018年2月2日 上午10:57:49
+ * @author:sunshine
+ * @version:v1.0.0
+ * @date:2018年5月4日
  */
 public class MysqlDB2Doc {
-	   //键类型字典  
+	//键类型字典  
     private static Map<String,String> keyType = new HashMap<String,String>();
     //初始化jdbc  
     static{  
@@ -37,10 +36,10 @@ public class MysqlDB2Doc {
             e.printStackTrace();
         }  
     }
-    private static String schema = "test_sns"; //目标数据库 名  
-    private static String url = "jdbc:mysql://192.168.1.240:3306/"+schema;//链接url  
+    private static String schema = "clinic_medicine_erp"; //目标数据库 名  
+    private static String url = "jdbc:mysql://111.231.203.172:3306/"+schema;//链接url  
     private static String username = "root"; //用户名  
-    private static String password = "1qa2ws3ed"; //密码  
+    private static String password = "shyzs,,.//"; //密码  
 
     //查询所有表的sql语句  
     private static String sql_get_all_tables = "select table_name,TABLE_COMMENT from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+schema+"' and TABLE_TYPE='BASE TABLE'";
@@ -49,7 +48,7 @@ public class MysqlDB2Doc {
     public static void main(String[] args) throws Exception {  
         //初始化word文档  
         Document document = new Document(PageSize.A4); 
-        RtfWriter2.getInstance(document,new FileOutputStream("c:/"+schema+".doc"));  
+        RtfWriter2.getInstance(document,new FileOutputStream("f:/"+schema+".doc"));  
         document.open();  
         //查询开始  
         Connection conn = getConnection();
@@ -67,7 +66,7 @@ public class MysqlDB2Doc {
             System.out.println("...done");
             i++;
         }  
-        System.out.print("...处理完成,打开"+"c:/"+schema+".doc 查看");
+        System.out.print("...处理完成,打开"+"f:/"+schema+".doc 查看");
         document.close();  
         conn.close();
     }  

@@ -18,20 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("${lflClassName}Service")
 @Transactional
-public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> implements I${className}Service {
-    
-    @Resource
-	private ${className}Dao ${lflClassName}Dao;
-	
-	@Override
-	public BaseDAO<${className}> dao() {
-		return ${lflClassName}Dao;
-	}
-	
-    @Override
-	public void setId(${className} t, String id) {
-         t.set${uflBeanPK}(id);
-	}
+public class ${className}ServiceImpl extends AbstractServiceImpl<${className},${className}Dao> implements I${className}Service {
 	
 	@Override
 	public Integer insert(${className} ${lflClassName}) {
@@ -44,8 +31,8 @@ public class ${className}ServiceImpl extends AbstractServiceImpl<${className}> i
 	}
 
 	@Override
-	public ${className} findObjectById(String id) {
-		return super.findObjectById(id);
+	public ${className} findById(String id) {
+		return super.findById(id);
 	}
 
 	@Override
