@@ -1,10 +1,9 @@
 .idea
-.settings
-.project
-*.project
+.settings/*
 *.class
 target
 .classpath
+.project
 .factorypath
 bin
 *.log
