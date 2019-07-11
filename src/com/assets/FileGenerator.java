@@ -20,7 +20,7 @@ import com.assets.utils.StringUtil;
  */
 public class FileGenerator {
 	private final static String TEMPLATE_PATH = "com/assets/template/";//模板路径地址
-	private final static String SRC_PATH = "src" + StringUtil.FILE_SEPARATOR;
+	private final static String SRC_PATH = "out" + StringUtil.FILE_SEPARATOR;
 	protected String pkgPath;
 	protected String className;
 	protected String template;//模板文件名称

@@ -31,18 +31,13 @@ public class ${className}ServiceImpl extends AbstractServiceImpl<${className},${
 	}
 
 	@Override
-	public ${className} findById(String id) {
-		return super.findById(id);
+	public ${className} findObjectById(String id) {
+		return super.findObjectById(id);
 	}
 
 	@Override
 	public List<${className}> findList(Map<String, Object> map) {
 		return super.findList(map);
-	}
-
-	@Override
-	public List<${className}> queryList(${className} ${lflClassName}) {
-		return super.queryList(${lflClassName});
 	}
 
 	@Override

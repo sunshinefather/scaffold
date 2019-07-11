@@ -1,6 +1,7 @@
 package com.assets;
 
 import org.apache.commons.lang.StringUtils;
+
 import com.assets.wordsparser.UnderlineSplitWordsParser;
 import com.assets.wordsparser.WordsParser;
 /**
@@ -79,22 +80,25 @@ public class ColumnInfo {
 	public String parseJavaType() {
 		String jdbcType = StringUtils.lowerCase(getType());
 		String result = "String";
-		if (getDigits() > 0 || "decimal".equals(jdbcType)) {		
+		if (getDigits() > 0 || "decimal".equalsIgnoreCase(jdbcType)) {		
 			result = "BigDecimal";
-		}else if("int".equals(jdbcType) 
-				|| "bigint".equals(jdbcType)
-				|| "smallint".equals(jdbcType)
-				|| "integer".equals(jdbcType)
-				|| "mediumint".equals(jdbcType)
-				|| "tinyint".equals(jdbcType)
+		}else if("int".equalsIgnoreCase(jdbcType) 
+				|| "smallint".equalsIgnoreCase(jdbcType)
+				|| "integer".equalsIgnoreCase(jdbcType)
+				|| "mediumint".equalsIgnoreCase(jdbcType)
+				|| "tinyint".equalsIgnoreCase(jdbcType)
 				){
 			result = "Integer";
-		}else if("bigint".equals(jdbcType)){
+		}else if("bigint".equalsIgnoreCase(jdbcType)){
 			result = "Long";
 		}else if(jdbcType.contains("time") || jdbcType.contains("date")){
 			result = "Date";
-		}else if("bit".equals(jdbcType)){
+		}else if("bit".equalsIgnoreCase(jdbcType)){
 			result = "Boolean";
+		}else if("double".equalsIgnoreCase(jdbcType)){
+			result = "Double";
+		}else if("float".equalsIgnoreCase(jdbcType)){
+			result = "Float";
 		}
 		return result;
 	}

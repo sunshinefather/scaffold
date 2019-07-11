@@ -2,6 +2,8 @@ package algo;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Twitter_Snowflake<br>
@@ -139,13 +141,17 @@ public class SnowflakeIdWorker {
     //==============================Test=============================================
     /** 测试 */
     public static void main(String[] args) {
+    	Set<Long> sets =new HashSet<Long>();
+    	
         System.out.println(System.currentTimeMillis());
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 1);
+        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
         long startTime = System.nanoTime();
         for (int i = 0; i < 50000; i++) {
             long id = idWorker.nextId();
+            sets.add(id);
             System.out.println(id);
         }
+        System.out.println(sets.size());
         System.out.println((System.nanoTime()-startTime)/1000000+"ms");
     }
 }

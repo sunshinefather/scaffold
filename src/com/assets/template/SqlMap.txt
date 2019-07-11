@@ -23,7 +23,7 @@ ${resultMap}
 			<where>
 ${findByLike}
 			</where> 
-        order by `create_datetime` desc
+        order by `create_date` desc
 	</select>
 	<update id="update" parameterType="${className}">
 ${updateSql}

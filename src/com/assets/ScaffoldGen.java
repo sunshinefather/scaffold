@@ -182,7 +182,7 @@ public class ScaffoldGen {
 			rs = metaData.getPrimaryKeys(null, schema, tableName);
 			if (rs.next()) {
 				String keyName = rs.getString(COLUMN_NAME);
-				ColumnInfo keyInfo = new ColumnInfo(keyName, "VARCHAR", 64,0, 20,"主键");
+				ColumnInfo keyInfo = new ColumnInfo(keyName, "bigint",20,0,0,"主键");
 				tableInfo.setPrimaryKey(keyName);
 				tableInfo.setParserKey(keyInfo.parseFieldName());
 				tableInfo.addColumn(keyInfo);

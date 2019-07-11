@@ -293,7 +293,7 @@ public class TableInfo {
 			   || "delete_flag".equalsIgnoreCase(col.getName())	
 				)) {
 				sb.append(TAB3);
-				sb.append("<if test='" + col.parseFieldName() + " ! = null ' > ");
+				sb.append("<if test='" + col.parseFieldName() + " != null ' > ");
 				sb.append(" and `"+ col.getName() +"` = #{"+ col.parseFieldName() +"}");
 				sb.append("</if>");
 				sb.append(ENDL);	
