@@ -1,3 +1,2 @@
-1.去掉loadList 使用同统一findList
-2.添加 Double Integer  Boolean类型
-3.加强后端验证 HibernateValidatorFactoryUtils
+1.controller层统一使用restfull风格
+2.加强后端验证 HibernateValidatorFactoryUtils

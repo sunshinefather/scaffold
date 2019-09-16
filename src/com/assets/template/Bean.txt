@@ -3,9 +3,9 @@ package ${pkgPath};
 import java.io.Serializable;
 ${beanImports}
 /**
- * @Description:${moduleNameCN}bean
- * @ClassName:  ${className} 
- * @author: sunshine  
+ * ${moduleNameCN}bean
+ * @author ${author}  
+ * @date ${date}  
  */
 public class ${className} implements Serializable {
 	private static final long serialVersionUID = 1L;

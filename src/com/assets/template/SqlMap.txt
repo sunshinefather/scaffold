@@ -15,15 +15,15 @@ ${resultMap}
 	<select id="findById" parameterType="String" resultMap="baseResult">
 		${selectSql} 
 		where
-		${tablePK}=#{id}
+		`${tablePK}` = #{id}
 	</select>
 	
 	<select id="findList" resultMap="baseResult" parameterType="map">
 		${selectSql}
 			<where>
 ${findByLike}
-			</where> 
-        order by `create_date` desc
+			</where>
+${orderBySql}
 	</select>
 	<update id="update" parameterType="${className}">
 ${updateSql}

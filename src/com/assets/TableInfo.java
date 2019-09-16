@@ -230,24 +230,40 @@ public class TableInfo {
      */
 	public String getUpdateStatement() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(TAB2+"update " + name + " "+ENDL);
-		sb.append(TAB2+"<set>" +ENDL);
+		
+		sb.append(TAB2);
+		sb.append("update " + name + " ");
+	    sb.append(ENDL);
+	    
+	    sb.append(TAB2);
+		sb.append("<set>");
+	    sb.append(ENDL);
+	    
 		ColumnInfo col = null;
 		for (int i = 0; i < columns.size(); i++) {
 			col = columns.get(i);
 			if(!col.getName().toLowerCase().equals(tablePK.toLowerCase())){
+			    
+			    sb.append(TAB3);
 				if("String".equals(col.parseJavaType())){
-					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" != \"\" ' >"+ENDL);
+					sb.append("<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" != \"\" ' >");
 				}else{
-					sb.append(TAB3+"<if test='"+col.parseFieldName()+" !=null '>"+ENDL);
+					sb.append("<if test='"+col.parseFieldName()+" !=null '>");
 				}
-				sb.append(TAB4+col.getName() + " = #{" + col.parseFieldName() +"},"+ENDL);
-				sb.append(TAB3+"</if>"+ENDL);
+		        sb.append(ENDL);
+		        
+		        sb.append(TAB4);
+				sb.append("`" + col.getName() + "` = #{" + col.parseFieldName() +"},");
+				sb.append(ENDL);
+				
+				sb.append(TAB3);
+				sb.append("</if>");
+				sb.append(ENDL);
 			}
 	
 		}
 		sb.append(TAB2+"</set>" +ENDL);
-		sb.append(TAB1+" where " + tablePK + " = #{"+beanPK+"}");
+		sb.append(TAB2+" where `" + tablePK + "` = #{"+beanPK+"}");
 		return sb.toString();
 	}
     /**
@@ -268,7 +284,6 @@ public class TableInfo {
 			if(!col.getName().equals(this.tablePK)){
 				sb.append(TAB3);
 				sb.append("<result property=\"" + col.parseFieldName() + "\" column=\"" + col.getName()+"\" />");
-		                   //+ "\" jdbcType=\"" + col.parseJdbcType() + "\" />");
 				sb.append(ENDL);
 			}
 		}
@@ -293,7 +308,12 @@ public class TableInfo {
 			   || "delete_flag".equalsIgnoreCase(col.getName())	
 				)) {
 				sb.append(TAB3);
-				sb.append("<if test='" + col.parseFieldName() + " != null ' > ");
+                if("String".equals(col.parseJavaType())){
+                    sb.append("<if test='"+col.parseFieldName()+" != null and "+col.parseFieldName()+" != \"\" ' >");
+                }else{
+                    sb.append("<if test='"+col.parseFieldName()+" != null '>");
+                }
+                
 				sb.append(" and `"+ col.getName() +"` = #{"+ col.parseFieldName() +"}");
 				sb.append("</if>");
 				sb.append(ENDL);	
@@ -314,17 +334,51 @@ public class TableInfo {
 	public String getFindByLike() {
 		StringBuffer sb = new StringBuffer();
 		for (ColumnInfo col : columns) {
+		        //判断条件
 				sb.append(TAB3);
-				sb.append("<if test='"+col.parseFieldName()+" != null ' >"+ENDL);
+                if("String".equals(col.parseJavaType())){
+                    sb.append("<if test='"+col.parseFieldName()+" != null and "+col.parseFieldName()+" != \"\" ' >");
+                }else{
+                    sb.append("<if test='"+col.parseFieldName()+" != null '>");
+                }
+                sb.append(ENDL);
+                
+                //拼装内容
+                sb.append(TAB4);
 				if(col.getName().toLowerCase().endsWith("title") || col.getName().toLowerCase().endsWith("subject")
 					||col.getName().toLowerCase().endsWith("keyWords") || col.getName().toLowerCase().endsWith("content")){
-					sb.append(TAB4+"<![CDATA[ and instr("+ col.getName() +",#{"+ col.parseFieldName()+"})>0 ]]>"+ENDL);
+					sb.append("<![CDATA[ and instr("+ col.getName() +" , #{"+ col.parseFieldName()+"}) > 0 ]]>");
 				}else{
-					sb.append(TAB4+" and `"+ col.getName() +"` = #{"+ col.parseFieldName()+"}"+ENDL);
+					sb.append(" and `"+ col.getName() +"` = #{"+ col.parseFieldName()+"}");
 				}
-				sb.append(TAB3+"</if>"+ENDL);
+                sb.append(ENDL);
+                
+                //条件结束
+				sb.append(TAB3);
+				sb.append("</if>");
+				sb.append(ENDL);
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * 生成默认排序条件
+	 * @return String
+	 * @author sunshine
+	 * @date 2019年9月16日
+	 */
+	public String getOrderByCondition() {
+	       String orderByStr = null;
+	        for (ColumnInfo col : columns) {
+                if("create_date".equals(col.getName())) {
+                    orderByStr = " ORDER BY `create_date` desc ";
+                    break;
+                }else if("create_datetime".equals(col.getName())) {
+                    orderByStr = " ORDER BY `create_datetime` desc ";
+                    break;
+                } 
+	        }
+	        return TAB3+orderByStr;
 	}
     /**
      * 生成所有字段

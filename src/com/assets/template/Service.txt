@@ -4,9 +4,9 @@ import com.mdks.common.base.BaseService;
 import ${beanPath};
 
 /**
- * @Description:${moduleNameCN}业务层接口
- * @ClassName:  I${className}Service
- * @author: sunshine  
+ * ${moduleNameCN}业务层接口
+ * @author ${author}
+ * @date ${date}
  */
 public interface I${className}Service extends BaseService<${className}> {
 

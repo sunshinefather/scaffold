@@ -4,10 +4,9 @@ import com.mdks.common.base.BaseDAO;
 import ${beanPath};
 
 /**
- * ${moduleNameCN}Dao
- * @ClassName:  ${className}Dao   
- * @Description:   
- * @author: ${author} 
+ * ${moduleNameCN}DAO层
+ * @author ${author} 
+ * @date ${date}  
  */
 public interface ${className}Dao extends BaseDAO<${className}> {
 

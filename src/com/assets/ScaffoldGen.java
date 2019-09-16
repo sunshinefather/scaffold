@@ -25,6 +25,7 @@ public class ScaffoldGen {
 	private static final String JDBC_URL = "jdbc.url";//连接url
 	private static final String JDBC_DRIVER = "jdbc.driver";//jdbc驱动
 	private static final String JDBC_SCHEMA = "jdbc.schema";//数据库所有者
+	private static final String AUTHOR = "project.author";//数据库所有者
 	private static final String CONFIG_PROPERTIES = "jdbc.properties";//配置文件
 	private final Log log = LogFactory.getLog(getClass());
 	private Connection conn=null;//连接
@@ -120,6 +121,7 @@ public class ScaffoldGen {
 			user = config.getProperty(JDBC_USER);
 			password = config.getProperty(JDBC_PASSWORD);
 			schema = config.getProperty(JDBC_SCHEMA);
+			ScaffoldBuilder.AUTHOR = config.getProperty(AUTHOR);
 			if (StringUtil.isNotBlank(schema)) {
 				this.schema = schema;
 			}
@@ -178,14 +180,11 @@ public class ScaffoldGen {
 		}
 		ResultSet rs = null;
 		log.trace("解析表开始...");
+		String primaryKeyColumn = null;
 		try {
 			rs = metaData.getPrimaryKeys(null, schema, tableName);
 			if (rs.next()) {
-				String keyName = rs.getString(COLUMN_NAME);
-				ColumnInfo keyInfo = new ColumnInfo(keyName, "bigint",20,0,0,"主键");
-				tableInfo.setPrimaryKey(keyName);
-				tableInfo.setParserKey(keyInfo.parseFieldName());
-				tableInfo.addColumn(keyInfo);
+			    primaryKeyColumn = rs.getString(COLUMN_NAME);
 			}
 			else{
 				System.out.println(tableName+"表没有主键");
@@ -196,15 +195,33 @@ public class ScaffoldGen {
 			e.printStackTrace();
 			return null;
 		}
-		log.info("主键: " + tableInfo.getPrimaryKey());
+		log.info("主键: " + primaryKeyColumn);
 		
 		//解析表字段
 		try {
+		    
 			rs = metaData.getColumns(conn.getCatalog(), schema, tableName, null);
 			if (!rs.next()) {
 				log.fatal(schema + "." + tableName + " 表没找到");
 				return null;
 			}
+			
+			String columnName = rs.getString(COLUMN_NAME);
+			String columnType = rs.getString(TYPE_NAME);
+			int datasize = rs.getInt(COLUMN_SIZE);
+			String remarks=rs.getString(REMARKS);
+			//添加主键信息到字段列表中
+            if(columnName.equals(primaryKeyColumn)) {
+                ColumnInfo primaryKeyInfo = new ColumnInfo(primaryKeyColumn,columnType,datasize,0,0,remarks);
+                tableInfo.setParserKey(primaryKeyInfo.parseFieldName());
+                tableInfo.setPrimaryKey(primaryKeyColumn);
+                tableInfo.addColumn(primaryKeyInfo);
+            }else {
+                ColumnInfo primaryKeyInfo = new ColumnInfo(primaryKeyColumn,"bigint",20,0,0,"主键");
+                tableInfo.setParserKey(primaryKeyInfo.parseFieldName());
+                tableInfo.setPrimaryKey(primaryKeyColumn);
+                tableInfo.addColumn(primaryKeyInfo);   
+            }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

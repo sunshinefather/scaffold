@@ -1,31 +1,35 @@
 package com.assets;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.assets.utils.DevLog;
 import com.assets.utils.StringUtil;
 
 public class ScaffoldBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	protected final static String PKG_PREFIX = "com.shsy.clinic.module.";
-	protected final static String PKG_SUFFIX_MODEL = "bean.";
-	protected final static String PKG_SUFFIX_DAO = "dao.";
-	protected final static String PKG_SUFFIX_SERVICE = "service.";
-	protected final static String PKG_IMPL = "impl";
-	protected final static String PKG_SUFFIX_CONTROLLER = "controller.";
-	protected final static String PKG_SUFFIX_MAPPER = "mappers";
-	protected final static String MAPPER_SUFFIX="Mapper";
-	protected final static String DAO_SUFFIX="Dao";
-	protected final static String SERVICE_SUFFIX="Service";
-	protected final static String CONTROLLER_SUFFIX="Controller";
+	protected static String PKG_PREFIX = "com.shsy.clinic.module.";
+	protected static String PKG_SUFFIX_MODEL = "bean.";
+	protected static String PKG_SUFFIX_DAO = "dao.";
+	protected static String PKG_SUFFIX_SERVICE = "service.";
+	protected static String PKG_IMPL = "impl";
+	protected static String PKG_SUFFIX_CONTROLLER = "controller.";
+	protected static String PKG_SUFFIX_MAPPER = "mappers";
+	protected static String MAPPER_SUFFIX="Mapper";
+	protected static String DAO_SUFFIX="Dao";
+	protected static String SERVICE_SUFFIX="Service";
+	protected static String CONTROLLER_SUFFIX="Controller";
 	
-	protected final static String AUTHOR="sunshine";
+	protected static String AUTHOR="sunshine";
 	
 	protected String pkgName;//模块基本包路径
 	protected TableInfo tableInfo;
@@ -72,8 +76,11 @@ public class ScaffoldBuilder {
 		
 		DevLog.debug(tableInfo.getUpdateStatement());
 		mapping.put("updateSql", tableInfo.getUpdateStatement());//修改sql语句
-		mapping.put("author",AUTHOR);//作者
 		mapping.put("beanImports",tableInfo.getModelImports());//bean需要导入的类
+		mapping.put("orderBySql",tableInfo.getOrderByCondition());//排序sql
+	    mapping.put("author",AUTHOR);//作者
+	    SimpleDateFormat sf = new SimpleDateFormat("yyyy年M月d日");
+	    mapping.put("date",sf.format(new Date()));//作者
 	}
 	
 	/**
