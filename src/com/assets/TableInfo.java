@@ -109,7 +109,7 @@ public class TableInfo {
 		StringBuffer sb2 = new StringBuffer();//toString()方法
 		sb2.append(TAB1+"@Override"+ENDL);
 		sb2.append(TAB1+"public String toString() {"+ENDL);
-		sb2.append(TAB2+"return \"[");
+		sb2.append(TAB2+"return \"");
 		sb2.append(getClassName());
 		sb2.append(" [");
 		boolean isFirst=true;
@@ -119,9 +119,10 @@ public class TableInfo {
 			if(field.getRemarks()!=null && !"".equals(field.getRemarks().trim())){
 				sb.append(TAB1+"/**"+field.getRemarks()+"*/"+ENDL);
 			}
-			if(!isFirst){
-				sb2.append(", ");	
+			if(isFirst){
 				isFirst=false;
+			}else {
+		        sb2.append(", ");   
 			}
 			sb2.append(name);
 			sb2.append("=\"");
