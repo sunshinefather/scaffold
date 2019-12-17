@@ -246,11 +246,7 @@ public class TableInfo {
 			if(!col.getName().toLowerCase().equals(tablePK.toLowerCase())){
 			    
 			    sb.append(TAB3);
-				if("String".equals(col.parseJavaType())){
-					sb.append("<if test='"+col.parseFieldName()+" !=null and "+col.parseFieldName()+" != \"\" ' >");
-				}else{
-					sb.append("<if test='"+col.parseFieldName()+" !=null '>");
-				}
+				sb.append("<if test='"+col.parseFieldName()+" !=null '>");
 		        sb.append(ENDL);
 		        
 		        sb.append(TAB4);
