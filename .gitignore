@@ -15,4 +15,5 @@ build
 .pydevproject
 .gitignore
 .springBeans
-libraries
+librarie
+*.prefs
