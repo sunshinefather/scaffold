@@ -27,11 +27,27 @@ public class Card {
 		this.number = number;
 	}
 	
-	public static Card getDaWang() {
+	private static Card getDaWang() {
 		return new Card("大","王");
 	}
-	public static Card getXiaoWang() {
+	private static Card getXiaoWang() {
 		return new Card("小","王");
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	@Override
@@ -39,11 +55,11 @@ public class Card {
 		return pattern + " " + number;
 	}
 
-	public static enum Pattern {
+	private static enum Pattern {
 		红桃, 黑桃, 方块, 樱花
 	};
 
-	public static enum Number {
+	private static enum Number {
 		A, N2, N3, N4, N5, N6, N7, N8, N9, N10, J, Q, K
 	};
 
@@ -54,14 +70,16 @@ public class Card {
 				list.add(new Card(pattern, number));
 			}
 		}
-		list.add(Card.getDaWang());
-		list.add(Card.getXiaoWang());
+		list.add(getDaWang());
+		list.add(getXiaoWang());
 		Collections.shuffle(list);
 		return list;
 	}
 
 	public static void main(String[] args) {
-
+		Card.getPoker().forEach(a->{
+			System.out.println(a.getNumber());
+		});
 	}
 
 }
