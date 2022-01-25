@@ -2,21 +2,19 @@ package com.assets;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
+
+import util.DbUtil;
 /**
  * mysql数据库表导出为doc文档
  * @author:sunshine
@@ -51,16 +49,16 @@ public class MysqlDB2Doc {
         RtfWriter2.getInstance(document,new FileOutputStream("f:/"+schema+".doc"));  
         document.open();  
         //查询开始  
-        Connection conn = getConnection();
+        Connection conn = DbUtil.getConnection(url, username, password);
         //获取所有表  
-        List<?> tables = getDataBySQL(sql_get_all_tables,conn);
+        List<String []> tables = DbUtil.getDataBySQL(sql_get_all_tables,conn);
         int i=1;
-        for (Iterator<?> iterator = tables.iterator(); iterator.hasNext();) {  
-            String [] arr = (String []) iterator.next();
+        for (Iterator<String []> iterator = tables.iterator(); iterator.hasNext();) {  
+            String [] arr = iterator.next();
             //循环获取字段信息  
             System.out.print(i+".正在处理数据表-----------"+arr[0]);
             addTableMetaData(document,arr,i);
-            List<?> columns = getDataBySQL(sql_get_all_columns.replace("{table_name}", arr[0]),conn);
+            List<String []> columns = DbUtil.getDataBySQL(sql_get_all_columns.replace("{table_name}", arr[0]),conn);
             addTableDetail(document,columns);
             addBlank(document);
             System.out.println("...done");
@@ -69,7 +67,8 @@ public class MysqlDB2Doc {
         System.out.print("...处理完成,打开"+"f:/"+schema+".doc 查看");
         document.close();  
         conn.close();
-    }  
+    } 
+    
     /** 
      * 添加一个空行 
      * @param document 
@@ -87,7 +86,7 @@ public class MysqlDB2Doc {
      * @param columns 
      * @throws Exception 
      */  
-    public static void addTableDetail(Document document,List<?> columns)throws Exception{  
+    public static void addTableDetail(Document document,List<String []> columns)throws Exception{  
         Table table = new Table(6);  
         table.setWidth(100f);//表格 宽度100%  
         table.setBorderWidth(1);  
@@ -134,8 +133,8 @@ public class MysqlDB2Doc {
         table.addCell(cell6);
         table.endHeaders();// 表头结束  
         int x = 1;
-        for (Iterator<?> iterator = columns.iterator(); iterator.hasNext();) {  
-            String [] arr2 = (String []) iterator.next();
+        for (Iterator<String []> iterator = columns.iterator(); iterator.hasNext();) {  
+            String [] arr2 = iterator.next();
             Cell c1 = new Cell(x+"");
             Cell c2 = new Cell(arr2[0]);
             Cell c3 = new Cell(arr2[1]);
@@ -172,49 +171,5 @@ public class MysqlDB2Doc {
         Paragraph ph = new Paragraph(i+". 表名: "+arr[0]+"	    描述: "+(arr[1]==null?"":arr[1]));
         ph.setAlignment(Paragraph.ALIGN_LEFT); 
         dcument.add(ph);
-    }  
-    /** 
-     * 根据SQL语句查询出列表 
-     * @param sql 
-     * @param conn 
-     * @return 
-     */  
-    public static List<?> getDataBySQL(String sql,Connection conn){  
-        Statement stmt = null;
-        ResultSet rs = null;
-        List<Object> list = new ArrayList<Object>();
-        try {  
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while(rs.next()){  
-                String [] arr = new String[rs.getMetaData().getColumnCount()];
-                for(int i=0;i<arr.length;i++){  
-                    arr[i] = rs.getString(i+1);
-                }  
-                list.add(arr);
-            }  
-        } catch (SQLException e) {  
-            e.printStackTrace();
-        }finally{  
-            try {  
-                if(rs!=null)rs.close();
-                if(stmt!=null)stmt.close();
-            } catch (SQLException e) {  
-                e.printStackTrace();
-            }  
-        }  
-        return list;
-    }  
-    /** 
-     * 获取数据库连接 
-     * @return 
-     */  
-    public static Connection getConnection(){  
-        try {  
-            return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {  
-            e.printStackTrace();
-        }  
-        return null;
-    }  
+    }
 }
